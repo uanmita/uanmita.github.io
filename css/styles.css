@@ -6,6 +6,7 @@
   margin: 0;
 }
 
+
 /* Definición de fuentes personalizadas */
 
 @font-face{
@@ -263,5 +264,7 @@ max-height: 100%;
   text-align: right;
   padding: auto;
 }
+
+
 
 
