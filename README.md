@@ -84,9 +84,9 @@ La aplicación utilizará Firebase para:
 
 ## 🎓 Información académica
 
-- **Titulación:** [Tu titulación]
-- **Universidad:** [Tu universidad]
-- **Tutor:** [Nombre del tutor]
+- **Titulación:** Técnico superior en Desarrollo de Aplicaciones Multiplataforma
+- **Universidad:** Alfonso x El Sabio UAX
+- **Tutor:** Borja Martin Herrero
 
 ---
 
