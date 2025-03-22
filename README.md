@@ -80,7 +80,7 @@ La aplicación utilizará Firebase para:
 - **Coordenadas:** 41°02'56.0"N 4°11'28.0"E
 - **Contacto:** 
   - Teléfono: +34 555 344 001 (reservas)
-  - Email: info@costabravarea.com
+  - Email: uanmita@gmail.com
 
 ## 🎓 Información académica
 
