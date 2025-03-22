@@ -1,9 +1,3 @@
-Entiendo, voy a ajustar el README para que refleje mejor el contenido real de tu proyecto, utilizando Firebase como base de datos y Kotlin para el desarrollo de la aplicación móvil, basándome estrictamente en lo que se muestra en el archivo index.html.
-
-
-
-# 🚐 TFG: Desarrollo de Aplicación para Área de Autocaravanas "El Rinconcito"
-
 ## 📋 Descripción del Proyecto
 
 Este repositorio contiene mi Trabajo de Fin de Grado (TFG) centrado en el desarrollo de una aplicación para el Área de Autocaravanas "El Rinconcito", ubicada en Torre de Benagalbon, Rincón de la Victoria (Málaga).
