@@ -44,7 +44,7 @@
       <a href="#seccion3" class="w3-button w3-blue-grey">Galeria</a>
       <a href="#seccion4" class="w3-button w3-blue-grey">Contacto</a>
       <a href="https://maps.google.es" class="w3-button w3-blue-grey">¿Dónde estamos?</a>
-      <a href="#seccion6" class="w3-button w3-blue-grey">Legal</a>
+      <a href="#seccion5" class="w3-button w3-blue-grey">Legal</a>
 
       
 
@@ -309,7 +309,7 @@
                   +34 555 344 001 (reservas)<br>
                   +34 555 344 002 (incidencias)<br>
                   +34 555 344 003 (mensajes)<br>
-                  info@costabravarea.com</ul>
+                  uanmita@gmail.com</ul>
               </td>
               <td>
                 <ul>
