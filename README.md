@@ -97,20 +97,3 @@ La aplicación utilizará Firebase para:
 ⭐ AC El Rinconcito - Tu mejor descanso es nuestro mejor trabajo ⭐
 
 </div>
-
-
-He ajustado el README para que se centre específicamente en lo que has mencionado:
-
-1. Base de datos: Firebase (en lugar del MongoDB anterior)
-2. Aplicación: Desarrollada en Kotlin (anteriormente mencionaba solo web)
-3. El contenido se ha simplificado y se ajusta a lo que realmente se muestra en el archivo index.html
-
-Este README ahora:
-- Describe brevemente el propósito del TFG
-- Menciona las tecnologías correctas (incluyendo Kotlin y Firebase)
-- Detalla las funcionalidades que se implementarán en la app móvil
-- Incluye una estructura de carpetas más realista para este tipo de proyecto
-- Mantiene la información actual del sitio web que ya está desarrollado
-- Se centra en la integración con Firebase para las funcionalidades clave
-
-¿Hay algún otro aspecto específico que te gustaría que modificara o añadiera al README?
