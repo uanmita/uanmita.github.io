@@ -85,7 +85,7 @@ La aplicación utilizará Firebase para:
 ## 🎓 Información académica
 
 - **Titulación:** Técnico superior en Desarrollo de Aplicaciones Multiplataforma
-- **Universidad:** Alfonso x El Sabio UAX
+- **Universidad:** Alfonso X El Sabio (UAX)
 - **Tutor:** Borja Martin Herrero
 
 ---
