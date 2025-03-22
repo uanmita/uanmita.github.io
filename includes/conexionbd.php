@@ -2,7 +2,7 @@
 $host = "localhost"; 
 $username = "adminpi"; 
 $password = "Uanmita.0909"; 
-$dbname = "pi"; 
+$dbname = "proyecto1DAM"; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -11,7 +11,6 @@ try {
 } catch (PDOException $e) {
     die("Error al conectar con la base de datos: " . $e->getMessage());
 } 
-echo ("Conexion exitosa a la BBDD")
 
 /*PDO significa PHP Data Objects. 
 Es una extensión de PHP que proporciona 
