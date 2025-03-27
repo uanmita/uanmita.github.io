@@ -32,29 +32,32 @@
                 <a href="#contacto">Contacto</a>
                 
                 <!-- Selector de idiomas -->
-                <div class="language-selector">
-                    <button class="language-btn">
-                        <img src="img/es-flag.png" alt="Español">
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="language-dropdown">
-                        <a href="#" data-lang="es"><img src="img/es-flag.png"> Español</a>
-                        <a href="#" data-lang="en"><img src="img/en-flag.png"> English</a>
-                        <a href="#" data-lang="de"><img src="img/de-flag.png"> Deutsch</a>
-			<a href="#" data-lang="de"><img src="img/fr-flag.png"> France</a>    
+               <div class="language-selector">
+    <button class="language-btn">
+        <img src="img/es-flag.png" alt="Español" id="current-flag">
+        <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="language-dropdown">
+        <a href="#" onclick="doGTranslate('es|es');return false;"><img src="img/es-flag.png"> Español</a>
+        <a href="#" onclick="doGTranslate('es|en');return false;"><img src="img/en-flag.png"> English</a>
+        <a href="#" onclick="doGTranslate('es|de');return false;"><img src="img/de-flag.png"> Deutsch</a>
+        <a href="#" onclick="doGTranslate('es|fr');return false;"><img src="img/fr-flag.png"> Français</a>
+    </div>
+</div>    
                     			         
                 <a href="tel:+34555344001" class="btn btn-nav">Llamar</a>
             </div>
-			 <div id="google_translate_element" class="languaje.dropdown">
-       			 <script type="text/javascript">
-       			   function googleTranslateElementInit() {
-           		 new google.translate.TranslateElement({ pageLanguage: 'es', includedLanguages: 'es,en,de,fr,it', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true }, 'google_translate_element');
-         		 }
-      			  </script>
-       			 <script type="text/javascript"
-          		src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-      			</div>
-            
+			<div id="google_translate_element" style="display:none;"></div>
+<script>
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'es',
+            includedLanguages: 'es,en,de,fr',
+            autoDisplay: false 
+        }, 'google_translate_element');
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
             <button class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
             </button>
