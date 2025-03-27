@@ -905,7 +905,7 @@ input:focus:invalid, select:focus:invalid {
 
 /* Ejemplo aplicado a tu hero section (reemplaza el actual) */
 .hero {
-    url('img/hero-parallax.jpg') fixed center/cover;
+    url ("img/hero-bg") fixed center/cover;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -962,4 +962,74 @@ input:focus:invalid, select:focus:invalid {
     opacity: 0;
     transform: translateX(100%);
   }
+}
+/* Estilos para el selector de idiomas */
+.language-selector {
+    position: relative;
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.language-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.language-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.language-btn img {
+    width: 20px;
+    height: 15px;
+    margin-right: 5px;
+}
+
+.language-dropdown {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1000;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.language-dropdown.show {
+    display: block;
+}
+
+.language-dropdown a {
+    color: #333;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.language-dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+.language-dropdown a img {
+    width: 20px;
+    height: 15px;
+    margin-right: 10px;
+}
+
+/* Ocultar el widget de Google Translate */
+.goog-te-banner-frame, .goog-te-gadget-icon {
+    display: none !important;
+}
+
+body {
+    top: 0 !important;
 }
