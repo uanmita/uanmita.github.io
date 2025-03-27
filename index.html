@@ -7,80 +7,8 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="img/favicon.png">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' https://translate.google.com https://translate.googleapis.com">
-// 1. Función para cargar Google Translate
-function loadGoogleTranslate() {
-    return new Promise((resolve) => {
-        const script = document.createElement('script');
-        script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-        script.onload = resolve;
-        document.head.appendChild(script);
-    });
-}
-
-// 2. Inicialización
-function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-        pageLanguage: 'es',
-        includedLanguages: 'en,es,fr,de',
-        autoDisplay: false,
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element');
-    
-    // Guarda referencia global
-    window.gTranslateInstance = GTranslate.getTranslateElement();
-}
-
-// 3. Controlador de eventos mejorado
-document.addEventListener('DOMContentLoaded', async function() {
-    // Carga Google Translate
-    await loadGoogleTranslate();
-    
-    // Espera a que esté listo
-    const checkInterval = setInterval(() => {
-        if(window.gTranslateInstance) {
-            clearInterval(checkInterval);
-            setupLanguageSelector();
-        }
-    }, 100);
-    
-    function setupLanguageSelector() {
-        const dropdownItems = document.querySelectorAll('.language-dropdown a');
-        
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                const lang = this.getAttribute('data-lang');
-                
-                // Cambia bandera
-                document.getElementById('current-flag').src = `img/${lang}-flag.png`;
-                
-                // Ejecuta traducción
-                if(window.gTranslateInstance) {
-                    try {
-                        window.gTranslateInstance.translate(lang);
-                        localStorage.setItem('preferredLanguage', lang);
-                    } catch(error) {
-                        console.error("Error en traducción:", error);
-                        // Fallback: redirección a versión traducida
-                        window.location.href = `https://translate.google.com/translate?hl=es&sl=auto&tl=${lang}&u=${encodeURIComponent(window.location.href)}`;
-                    }
-                }
-                
-                // Cierra dropdown
-                document.getElementById('languageDropdown').classList.remove('show');
-            });
-        });
-    }
-});
-
-// 4. Aplica idioma guardado al cargar
-if(localStorage.getItem('preferredLanguage')) {
-    document.addEventListener('gtranslateLoaded', function() {
-        window.gTranslateInstance.translate(localStorage.getItem('preferredLanguage'));
-    });
-}
-</script></head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://translate.google.com https://translate.googleapis.com">  
+</head>
 <body>
     <!-- Cookies Banner -->
     <div class="cookies-banner" id="cookiesBanner">
