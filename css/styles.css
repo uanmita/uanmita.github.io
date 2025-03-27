@@ -963,3 +963,11 @@ input:focus:invalid, select:focus:invalid {
     transform: translateX(100%);
   }
 }
+/* Asegura que Google Translate no inyecte elementos visibles */
+.goog-te-banner-frame, .goog-te-gadget-icon {
+    display: none !important;
+}
+
+body {
+    top: 0 !important; /* Elimina espacio extra que Google añade */
+}

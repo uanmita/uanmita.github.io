@@ -32,36 +32,76 @@
                 <a href="#contacto">Contacto</a>
                 
                 <!-- Selector de idiomas -->
-               <div class="language-selector">
+  <div class="language-selector">
     <button class="language-btn">
-        <img src="img/es-flag.png" alt="Español" id="current-flag">
+        <img src="img/es-flag.png" alt="Idioma" id="current-flag">
         <i class="fas fa-chevron-down"></i>
     </button>
     <div class="language-dropdown">
-        <a href="#" onclick="doGTranslate('es|es');return false;"><img src="img/es-flag.png"> Español</a>
-        <a href="#" onclick="doGTranslate('es|en');return false;"><img src="img/en-flag.png"> English</a>
-        <a href="#" onclick="doGTranslate('es|de');return false;"><img src="img/de-flag.png"> Deutsch</a>
-        <a href="#" onclick="doGTranslate('es|fr');return false;"><img src="img/fr-flag.png"> Français</a>
+        <a href="#" data-translate="es"><img src="img/es-flag.png"> Español</a>
+        <a href="#" data-translate="en"><img src="img/en-flag.png"> English</a>
+        <a href="#" data-translate="fr"><img src="img/fr-flag.png"> Français</a>
+        <a href="#" data-translate="de"><img src="img/de-flag.png"> Deutsch</a>
     </div>
-</div>    
+</div>   
                     			         
                 <a href="tel:+34555344001" class="btn btn-nav">Llamar</a>
             </div>
-			<div id="google_translate_element" style="display:none;"></div>
+			<!-- Elimina cualquier div/google_translate_element existente -->
+<div id="google_translate_container" style="display:none;"></div>
+
 <script>
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'es',
-            includedLanguages: 'es,en,de,fr',
-            autoDisplay: false 
-        }, 'google_translate_element');
+// Función principal de traducción
+function activateGoogleTranslate(lang) {
+    if(typeof GTranslate != 'undefined'){
+        GTranslate.getTranslateElement().translate(lang);
+        updateFlag(lang);
+    } else {
+        console.error("Google Translate no está cargado correctamente");
     }
+}
+
+// Actualiza la bandera visualmente
+function updateFlag(lang) {
+    const flagMap = {
+        'es': 'es-flag.png',
+        'en': 'en-flag.png', 
+        'fr': 'fr-flag.png',
+        'de': 'de-flag.png'
+    };
+    document.getElementById('current-flag').src = `img/${flagMap[lang] || 'es-flag.png'}`;
+}
+
+// Carga Google Translate dinámicamente
+function loadGoogleTranslate() {
+    var script = document.createElement('script');
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
+    document.head.appendChild(script);
+}
+
+// Inicialización
+function googleTranslateInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'es,en,fr,de',
+        autoDisplay: false,
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_container');
+}
+
+// Carga cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    loadGoogleTranslate();
+    
+    // Asigna eventos a los enlaces de idioma
+    document.querySelectorAll('[data-translate]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            activateGoogleTranslate(this.getAttribute('data-translate'));
+        });
+    });
+});
 </script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-            <button class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
     </nav>
 
     <!-- Hero Section -->
