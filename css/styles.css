@@ -963,3 +963,68 @@ input:focus:invalid, select:focus:invalid {
     transform: translateX(100%);
   }
 }
+/* Selector de idiomas */
+.language-selector {
+    position: relative;
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.language-btn {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.language-btn img {
+    width: 20px;
+    height: auto;
+}
+
+.language-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    min-width: 120px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    z-index: 1000;
+}
+
+.language-dropdown.show {
+    display: block;
+}
+
+.language-dropdown a {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    color: #333;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.language-dropdown a:hover {
+    background: #f5f5f5;
+}
+
+.language-dropdown img {
+    width: 16px;
+    margin-right: 8px;
+}
+
+/* Oculta el widget de Google */
+.goog-te-banner-frame, .goog-te-gadget-icon {
+    display: none !important;
+}
+
+body {
+    top: 0 !important;
+}
