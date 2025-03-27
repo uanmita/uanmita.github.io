@@ -42,6 +42,15 @@
                         <a href="#" data-lang="en"><img src="img/en-flag.png"> English</a>
                         <a href="#" data-lang="de"><img src="img/de-flag.png"> Deutsch</a>
                     </div>
+		      <script>
+        		document.getElementById("language-selector").addEventListener("change", function() {
+          		const lang = this.value;
+           	        if (lang) {
+                	const currentUrl = encodeURIComponent(window.location.href);
+               		window.open(`https://translate.google.com/translate?hl=es&sl=auto&tl=${lang}&u=${currentUrl}`, "_blank");
+          		  }
+   			     });
+  			</script>
                 </div>
                 
                 <a href="tel:+34555344001" class="btn btn-nav">Llamar</a>
@@ -163,7 +172,7 @@
     <!-- Contacto -->
     <section class="contact" id="contacto">
         <div class="container">
-            <h2 class="section-title">Contacto/Solicitud Reserva</h2>
+            <h2 class="section-title">Contacto</h2>
             
             <div class="contact-container">
                 <div class="contact-info">
@@ -263,13 +272,13 @@
         <label>Servicios adicionales:</label>
         <div class="checkbox-group">
             <label>
-                <input type="checkbox" name="services" value="electricidad"> Conexión eléctrica (+4€ / noche)
+                <input type="checkbox" name="services" value="Electricidad"> Conexión eléctrica (+5€/noche)
             </label>
             <label>
-                <input type="checkbox" name="services" value="vehiculo_extra"> Vehiculo adicional (+10€)
+                <input type="checkbox" name="services" value="Vehiculo extra"> Vehiculo adicional (+10€/noche)
             </label>
             <label>
-                <input type="checkbox" name="services" value="late_checkout"> Late Check Out (+2€ / Salida a 20.00 hrs)
+                <input type="checkbox" name="services" value="Late check out"> Late Check Out (+2€/Salida a la 20:00 hrs.)
             </label>
         </div>
     </div>
@@ -282,7 +291,7 @@
 
     <div class="form-footer">
         <p class="required-fields">* Campos obligatorios</p>
-        <button type="submit" class="btn btn-primary">Solicitar reserva</button>
+        <button type="submit" class="btn btn-primary">Solicitud reserva</button>
     </div>
 </form>
     </section>
