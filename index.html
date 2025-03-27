@@ -7,6 +7,62 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="img/favicon.png">
+<script>
+// Configuración de Google Translate
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'es,en,fr,de',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+    }, 'google_translate_element');
+}
+
+// Carga el script de Google Translate
+function loadGoogleTranslate() {
+    var script = document.createElement('script');
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    document.head.appendChild(script);
+}
+
+// Controlador del menú desplegable
+document.addEventListener('DOMContentLoaded', function() {
+    loadGoogleTranslate();
+    
+    const languageBtn = document.getElementById('languageBtn');
+    const languageDropdown = document.getElementById('languageDropdown');
+    
+    // Toggle del dropdown
+    languageBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        languageDropdown.classList.toggle('show');
+    });
+    
+    // Cierra el dropdown al hacer clic fuera
+    document.addEventListener('click', function() {
+        languageDropdown.classList.remove('show');
+    });
+    
+    // Maneja la selección de idioma
+    document.querySelectorAll('#languageDropdown a').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const lang = this.getAttribute('data-lang');
+            
+            // Cambia la bandera visual
+            document.getElementById('current-flag').src = `img/${lang}-flag.png`;
+            
+            // Activa la traducción
+            if(typeof GTranslate != 'undefined') {
+                GTranslate.getTranslateElement().translate(lang);
+            }
+            
+            // Cierra el dropdown
+            languageDropdown.classList.remove('show');
+        });
+    });
+});
+</script>
 </head>
 <body>
     <!-- Cookies Banner -->
@@ -32,18 +88,20 @@
                 <a href="#contacto">Contacto</a>
                 
                 <!-- Selector de idiomas -->
-  <div class="language-selector">
-    <button class="language-btn">
+<div class="language-selector">
+    <button class="language-btn" id="languageBtn">
         <img src="img/es-flag.png" alt="Idioma" id="current-flag">
         <i class="fas fa-chevron-down"></i>
     </button>
-    <div class="language-dropdown">
-        <a href="#" data-translate="es"><img src="img/es-flag.png"> Español</a>
-        <a href="#" data-translate="en"><img src="img/en-flag.png"> English</a>
-        <a href="#" data-translate="fr"><img src="img/fr-flag.png"> Français</a>
-        <a href="#" data-translate="de"><img src="img/de-flag.png"> Deutsch</a>
+    <div class="language-dropdown" id="languageDropdown">
+        <a href="#" data-lang="es"><img src="img/es-flag.png"> Español</a>
+        <a href="#" data-lang="en"><img src="img/en-flag.png"> English</a>
+        <a href="#" data-lang="fr"><img src="img/fr-flag.png"> Français</a>
+        <a href="#" data-lang="de"><img src="img/de-flag.png"> Deutsch</a>
     </div>
-</div>   
+</div>
+
+<div id="google_translate_element" style="display:none;"></div>   
                     			         
                 <a href="tel:+34555344001" class="btn btn-nav">Llamar</a>
             </div>
