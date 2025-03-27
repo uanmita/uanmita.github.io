@@ -9,6 +9,82 @@
     <link rel="icon" href="img/favicon.png">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://translate.google.com https://translate.googleapis.com">  
 </head>
+<script>
+// 1. Carga Google Translate
+function loadGoogleTranslate() {
+    return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
+        document.head.appendChild(script);
+        script.onload = resolve;
+    });
+}
+
+// 2. Inicialización
+function googleTranslateInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'es,en,fr,de',
+        autoDisplay: false,
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+    
+    // Guarda la instancia globalmente
+    window.gTranslate = GTranslate.getTranslateElement();
+    
+    // Dispara evento cuando esté listo
+    document.dispatchEvent(new Event('gtranslateReady'));
+}
+
+// 3. Controlador del menú desplegable
+document.addEventListener('DOMContentLoaded', async function() {
+    // Carga Google Translate
+    await loadGoogleTranslate();
+    
+    // Configura el menú
+    const languageBtn = document.getElementById('languageBtn');
+    const languageDropdown = document.getElementById('languageDropdown');
+    
+    // Toggle del dropdown
+    languageBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        languageDropdown.classList.toggle('show');
+    });
+    
+    // Cierra al hacer clic fuera
+    document.addEventListener('click', function() {
+        languageDropdown.classList.remove('show');
+    });
+    
+    // Espera a que Google Translate esté listo
+    document.addEventListener('gtranslateReady', function() {
+        document.querySelectorAll('#languageDropdown a').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const lang = this.getAttribute('data-lang');
+                
+                // Cambia la bandera
+                document.getElementById('current-flag').src = `img/${lang}-flag.png`;
+                
+                // Activa la traducción
+                if(window.gTranslate) {
+                    try {
+                        window.gTranslate.translate(lang);
+                        localStorage.setItem('preferredLanguage', lang);
+                    } catch(error) {
+                        console.error("Error en traducción:", error);
+                        // Fallback: redirección
+                        window.open(`https://translate.google.com/translate?hl=es&sl=auto&tl=${lang}&u=${encodeURIComponent(window.location.href)}`, "_blank");
+                    }
+                }
+                
+                // Cierra el dropdown
+                languageDropdown.classList.remove('show');
+            });
+        });
+    });
+});
+</script>
 <body>
     <!-- Cookies Banner -->
     <div class="cookies-banner" id="cookiesBanner">
@@ -32,79 +108,25 @@
                 <a href="#galeria">Galería</a>
                 <a href="#contacto">Contacto</a>
                 
-                <!-- Selector de idiomas -->
+<!-- Selector de idiomas -->
 <div class="language-selector">
     <button class="language-btn" id="languageBtn">
         <img src="img/es-flag.png" alt="Idioma" id="current-flag">
         <i class="fas fa-chevron-down"></i>
     </button>
-    <div class="language-dropdown" id="languageDropdown">
+    	<div class="language-dropdown" id="languageDropdown">
         <a href="#" data-lang="es"><img src="img/es-flag.png"> Español</a>
         <a href="#" data-lang="en"><img src="img/en-flag.png"> English</a>
         <a href="#" data-lang="fr"><img src="img/fr-flag.png"> Français</a>
         <a href="#" data-lang="de"><img src="img/de-flag.png"> Deutsch</a>
-    </div>
-</div>
+    	</div>
+		</div>
 
-<div id="google_translate_element" style="display:none;"></div>   
+<!-- Contenedor oculto para Google Translate -->
+<div id="google_translate_element" style="display:none;"></div> 
                     			         
                 <a href="tel:+34555344001" class="btn btn-nav">Llamar</a>
             </div>
-			<!-- Elimina cualquier div/google_translate_element existente -->
-<div id="google_translate_container" style="display:none;"></div>
-
-<script>
-// Función principal de traducción
-function activateGoogleTranslate(lang) {
-    if(typeof GTranslate != 'undefined'){
-        GTranslate.getTranslateElement().translate(lang);
-        updateFlag(lang);
-    } else {
-        console.error("Google Translate no está cargado correctamente");
-    }
-}
-
-// Actualiza la bandera visualmente
-function updateFlag(lang) {
-    const flagMap = {
-        'es': 'es-flag.png',
-        'en': 'en-flag.png', 
-        'fr': 'fr-flag.png',
-        'de': 'de-flag.png'
-    };
-    document.getElementById('current-flag').src = `img/${flagMap[lang] || 'es-flag.png'}`;
-}
-
-// Carga Google Translate dinámicamente
-function loadGoogleTranslate() {
-    var script = document.createElement('script');
-    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
-    document.head.appendChild(script);
-}
-
-// Inicialización
-function googleTranslateInit() {
-    new google.translate.TranslateElement({
-        pageLanguage: 'es',
-        includedLanguages: 'es,en,fr,de',
-        autoDisplay: false,
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_container');
-}
-
-// Carga cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', function() {
-    loadGoogleTranslate();
-    
-    // Asigna eventos a los enlaces de idioma
-    document.querySelectorAll('[data-translate]').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            activateGoogleTranslate(this.getAttribute('data-translate'));
-        });
-    });
-});
-</script>
     </nav>
 
     <!-- Hero Section -->

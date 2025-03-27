@@ -963,21 +963,39 @@ input:focus:invalid, select:focus:invalid {
     transform: translateX(100%);
   }
 }
+/* Selector de idiomas */
 .language-selector {
     position: relative;
     display: inline-block;
+    margin-left: 15px;
+}
+
+.language-btn {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.language-btn img {
+    width: 20px;
+    height: auto;
 }
 
 .language-dropdown {
     display: none;
     position: absolute;
+    top: 100%;
     right: 0;
     background: white;
     min-width: 120px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     border-radius: 4px;
-    overflow: hidden;
+    z-index: 1000;
 }
 
 .language-dropdown.show {
@@ -990,7 +1008,7 @@ input:focus:invalid, select:focus:invalid {
     padding: 8px 12px;
     color: #333;
     text-decoration: none;
-    transition: all 0.3s;
+    transition: background 0.3s;
 }
 
 .language-dropdown a:hover {
@@ -998,11 +1016,11 @@ input:focus:invalid, select:focus:invalid {
 }
 
 .language-dropdown img {
-    width: 20px;
+    width: 16px;
     margin-right: 8px;
 }
 
-/* Oculta el widget nativo de Google */
+/* Oculta el widget de Google */
 .goog-te-banner-frame, .goog-te-gadget-icon {
     display: none !important;
 }
