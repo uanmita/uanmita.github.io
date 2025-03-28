@@ -53,7 +53,7 @@ document.getElementById('reservationForm').addEventListener('submit', async func
     );
     
     console.log('Éxito:', response);
-    mostrarNotificacion('exito', 'Reserva enviada con éxito ✔️');
+    mostrarNotificacion('exito', 'Solicitud de Reserva enviada con éxito');
     this.reset();
     
   } catch (error) {
