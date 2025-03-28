@@ -311,15 +311,22 @@
                     <h3>Legal</h3>
                     <a href="#aviso-legal" id="legalLink">Aviso Legal</a>
                     <a href="#politica-privacidad" id="privacyLink">Política de Cockies</a>
-                    </div>
+                </div>
                 <div class="footer-col">
                     <h3>Contacto</h3>
                     <p><i class="fas fa-phone"></i> +34 666 555 444</p>
                     <p><i class="fas fa-envelope"></i> info@elrinconcito.com</p>
                 </div>
             </div>
+            <div class="footer-social"></div>
+            <div class="footer-social-links" style="text-align: center; font-size: 2rem; color: white;">
+                <a href="#" style="margin: 0 10px; color: white;"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" style="margin: 0 10px; color: white;"><i class="fab fa-instagram"></i></a>
+                <a href="#" style="margin: 0 10px; color: white;"><i class="fab fa-x"></i></a>
+            </div>
+            <hr style="border: 1px solid white; margin: 20px 0;">
             <div class="footer-bottom">
-                <p>&copy; 2023 AC El Rinconcito. Todos los derechos reservados.<br>
+                <p>&copy; 2025 AC El Rinconcito. Todos los derechos reservados.<br>
                     Desarrollado por Neo Desings.</p>
             </div>
         </div>
@@ -342,7 +349,7 @@
                 <h1>AVISO LEGAL</h1>
                 <p class="company-name"><strong>AREA DE AUTOCARAVANAS EL RINCONCITO</strong></p>
                 <p class="last-update">Última actualización: <span id="legal-update">[Fecha]</span></p>
-    
+
                 <section class="legal-section">
                     <h2><i class="fas fa-building"></i> 1. Datos Identificativos</h2>
                     <ul class="legal-list">
@@ -352,13 +359,14 @@
                         <li><strong>Actividad:</strong> Camping y alojamiento turístico</li>
                     </ul>
                 </section>
-    
+
                 <section class="legal-section">
                     <h2><i class="fas fa-copyright"></i> 2. Propiedad Intelectual</h2>
-                    <p>Todos los contenidos (textos, imágenes, diseño, software) son propiedad exclusiva de AC El Rinconcito y están protegidos por derechos de autor.</p>
+                    <p>Todos los contenidos (textos, imágenes, diseño, software) son propiedad exclusiva de AC El
+                        Rinconcito y están protegidos por derechos de autor.</p>
                     <p>Queda prohibida la reproducción sin autorización expresa.</p>
                 </section>
-    
+
                 <section class="legal-section">
                     <h2><i class="fas fa-exclamation-triangle"></i> 3. Limitación de Responsabilidad</h2>
                     <p>AC El Rinconcito no se responsabiliza de:</p>
@@ -371,7 +379,7 @@
             </div>
         </div>
     </div>
-    
+
     <style>
         /* Estilos base del modal */
         .modal {
@@ -382,9 +390,9 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.7);
+            background-color: rgba(0, 0, 0, 0.7);
         }
-        
+
         .modal-content {
             background-color: #fefefe;
             margin: 5% auto;
@@ -394,9 +402,9 @@
             max-width: 800px;
             max-height: 80vh;
             overflow-y: auto;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
-        
+
         .close-modal {
             color: #aaa;
             float: right;
@@ -405,18 +413,18 @@
             cursor: pointer;
             transition: color 0.3s;
         }
-        
+
         .close-modal:hover {
             color: #333;
         }
-        
+
         /* Estilo específico para el contenido legal (igual que cookies) */
         .modal-cookies-style {
             font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
             color: #333;
             line-height: 1.6;
         }
-        
+
         .modal-cookies-style h1 {
             color: #2c3e50;
             border-bottom: 2px solid #e74c3c;
@@ -424,30 +432,30 @@
             margin-bottom: 20px;
             font-size: 28px;
         }
-        
+
         .company-name {
             font-size: 18px;
             color: #c0392b;
             margin-bottom: 5px;
         }
-        
+
         .last-update {
             font-style: italic;
             color: #7f8c8d;
             margin-bottom: 30px;
             font-size: 14px;
         }
-        
+
         .legal-section {
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 1px solid #eee;
         }
-        
+
         .legal-section:last-child {
             border-bottom: none;
         }
-        
+
         .legal-section h2 {
             color: #e74c3c;
             font-size: 22px;
@@ -456,15 +464,15 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .legal-list {
             padding-left: 20px;
         }
-        
+
         .legal-list li {
             margin-bottom: 8px;
         }
-        
+
         @media (max-width: 768px) {
             .modal-content {
                 width: 90%;
@@ -473,26 +481,26 @@
             }
         }
     </style>
-    
+
     <script>
         // Actualizar fecha automáticamente
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const updateDate = document.getElementById('legal-update');
-            if(updateDate) {
+            if (updateDate) {
                 const today = new Date();
                 const options = { year: 'numeric', month: 'long', day: 'numeric' };
                 updateDate.textContent = today.toLocaleDateString('es-ES', options);
             }
-            
+
             // Control del modal (opcional)
             const modal = document.getElementById('legalModal');
             const span = document.querySelector('.close-modal');
-            
-            span.onclick = function() {
+
+            span.onclick = function () {
                 modal.style.display = "none";
             }
-            
-            window.onclick = function(event) {
+
+            window.onclick = function (event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
