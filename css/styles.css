@@ -173,7 +173,7 @@ h3 { font-size: 1.5rem; }
     color: var(--primary);
     font-weight: 700;
     font-size: 2rem;
-    color: var(--accent);
+    color:var(--accent);
 }
 
 .logo {
@@ -539,7 +539,7 @@ h3 { font-size: 1.5rem; }
 
 /* ===== FOOTER ===== */
 .footer {
-    background: var(--primary-dark);
+    background: var(--accent);
     color: var(--white);
     padding: 60px 0 0;
 }
@@ -605,11 +605,13 @@ h3 { font-size: 1.5rem; }
     background: #25D366;
     bottom: 30px;
     right: 30px;
+    
 }
 
 .whatsapp-btn:hover {
     background: #128C7E;
     transform: scale(1.1);
+
 }
 
 .home-btn {
