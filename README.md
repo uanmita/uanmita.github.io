@@ -6,7 +6,7 @@ El proyecto incluye tanto la página web actual (HTML, CSS, JavaScript) como una
 
 ## 🛠️ Tecnologías utilizadas
 
-- **Frontend Web:** HTML5, CSS3, JavaScript, W3.CSS, Bootstrap 5
+- **Frontend Web:** HTML5, CSS3, JavaScript, W3.CSS, Tailwind
 - **Aplicación Móvil:** Kotlin
 - **Base de Datos:** Firebase
 - **Servicios Adicionales:** Google Translate API
