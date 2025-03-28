@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="img/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
@@ -36,24 +37,24 @@
 
                 <!-- Selector de idiomas -->
                 <div class="language-selector" style="position: relative; display: inline-block;"></div>
-                    <button class="language-btn" id="google_translate_element">
-                        <script type="text/javascript">
-                            function googleTranslateElementInit() {
-                                new google.translate.TranslateElement({ pageLanguage: 'es', includedLanguages: 'es,en,de,fr,it', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true }, 'google_translate_element');
-                            }
+                <button class="language-btn" id="google_translate_element">
+                    <script type="text/javascript">
+                        function googleTranslateElementInit() {
+                            new google.translate.TranslateElement({ pageLanguage: 'es', includedLanguages: 'es,en,de,fr,it', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true }, 'google_translate_element');
+                        }
+                    </script>
+                    <script type="text/javascript"
+                        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
                         </script>
-                        <script type="text/javascript"
-                            src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
-                        </script>                        
-                    </button>
-
-                </div>
+                </button>
 
             </div>
 
-            <button class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </button>
+        </div>
+
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
         </div>
     </nav>
 
@@ -167,7 +168,7 @@
     <!-- Contacto -->
     <section class="contact" id="contacto">
         <div class="container">
-            <h2 class="section-title">Contacto</h2>
+            <h2 class="section-title">Contacto / Solicitud Reserva</h2>
 
             <div class="contact-container">
                 <div class="contact-info">
@@ -197,7 +198,7 @@
                     </div>
                 </div>
 
-                <!-- Dentro de la sección de contacto, reemplaza el formulario existente con este: -->
+                <!-- FORMULARIO DE CONTACTO Y RESERVA -->
                 <form class="contact-form" id="reservationForm">
                     <!-- Datos personales -->
                     <div class="form-row">
@@ -268,10 +269,12 @@
                                 (+5€/noche)
                             </label>
                             <label>
-                                <input type="checkbox" name="services" value="Vehiculo extra"> Vehículo extra (+5€/noche)
+                                <input type="checkbox" name="services" value="Vehiculo extra"> Vehículo extra
+                                (+5€/noche)
                             </label>
                             <label>
-                                <input type="checkbox" name="services" value="Late Check Out"> Late Check Out (+10€ Salida 20:00hrs.) 
+                                <input type="checkbox" name="services" value="Late Check Out"> Late Check Out (+10€
+                                Salida 20:00hrs.)
                             </label>
                         </div>
                     </div>
@@ -307,24 +310,23 @@
                 <div class="footer-col">
                     <h3>Legal</h3>
                     <a href="#aviso-legal" id="legalLink">Aviso Legal</a>
-                    <a href="#politica-privacidad" id="privacyLink">Política de Privacidad</a>
-                    <a href="#cookies" id="cookiesLink">Cookies</a>
-                </div>
+                    <a href="#politica-privacidad" id="privacyLink">Política de Cockies</a>
+                    </div>
                 <div class="footer-col">
                     <h3>Contacto</h3>
-                    <p><i class="fas fa-phone"></i> +34 555 344 001</p>
+                    <p><i class="fas fa-phone"></i> +34 666 555 444</p>
                     <p><i class="fas fa-envelope"></i> info@elrinconcito.com</p>
                 </div>
             </div>
-
             <div class="footer-bottom">
-                <p>&copy; 2023 AC El Rinconcito. Todos los derechos reservados.</p>
+                <p>&copy; 2023 AC El Rinconcito. Todos los derechos reservados.<br>
+                    Desarrollado por Neo Desings.</p>
             </div>
         </div>
     </footer>
 
     <!-- Botones flotantes -->
-    <a href="https://wa.me/34555344001" class="float-btn whatsapp-btn">
+    <a href="https://wa.me/34666555444" class="float-btn whatsapp-btn">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -336,34 +338,399 @@
     <div class="modal" id="legalModal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>Aviso Legal</h2>
-            <div class="modal-body">
-                <h3>1. Datos identificativos</h3>
-                <p>AC El Rinconcito, con CIF X12345678 y domicilio en Ctra. de la Playa, 29730, Málaga.</p>
-
-                <h3>2. Propiedad intelectual</h3>
-                <p>Todos los contenidos son propiedad exclusiva de AC El Rinconcito.</p>
-
-                <h3>3. Responsabilidad</h3>
-                <p>No nos hacemos responsables del mal uso de los contenidos.</p>
+            <div class="modal-cookies-style">
+                <h1>AVISO LEGAL</h1>
+                <p class="company-name"><strong>AREA DE AUTOCARAVANAS EL RINCONCITO</strong></p>
+                <p class="last-update">Última actualización: <span id="legal-update">[Fecha]</span></p>
+    
+                <section class="legal-section">
+                    <h2><i class="fas fa-building"></i> 1. Datos Identificativos</h2>
+                    <ul class="legal-list">
+                        <li><strong>Denominación:</strong> AC El Rinconcito</li>
+                        <li><strong>CIF:</strong> X99999999</li>
+                        <li><strong>Domicilio:</strong> Ctra. de la Playa, 29730, Málaga</li>
+                        <li><strong>Actividad:</strong> Camping y alojamiento turístico</li>
+                    </ul>
+                </section>
+    
+                <section class="legal-section">
+                    <h2><i class="fas fa-copyright"></i> 2. Propiedad Intelectual</h2>
+                    <p>Todos los contenidos (textos, imágenes, diseño, software) son propiedad exclusiva de AC El Rinconcito y están protegidos por derechos de autor.</p>
+                    <p>Queda prohibida la reproducción sin autorización expresa.</p>
+                </section>
+    
+                <section class="legal-section">
+                    <h2><i class="fas fa-exclamation-triangle"></i> 3. Limitación de Responsabilidad</h2>
+                    <p>AC El Rinconcito no se responsabiliza de:</p>
+                    <ul class="legal-list">
+                        <li>Mal uso de los contenidos por parte de los usuarios</li>
+                        <li>Errores técnicos no imputables</li>
+                        <li>Contenidos en sitios enlazados</li>
+                    </ul>
+                </section>
             </div>
         </div>
     </div>
+    
+    <style>
+        /* Estilos base del modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
+        
+        /* Estilo específico para el contenido legal (igual que cookies) */
+        .modal-cookies-style {
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .modal-cookies-style h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        .company-name {
+            font-size: 18px;
+            color: #c0392b;
+            margin-bottom: 5px;
+        }
+        
+        .last-update {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .legal-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .legal-section:last-child {
+            border-bottom: none;
+        }
+        
+        .legal-section h2 {
+            color: #e74c3c;
+            font-size: 22px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legal-list {
+            padding-left: 20px;
+        }
+        
+        .legal-list li {
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 90%;
+                margin: 10% auto;
+                padding: 15px;
+            }
+        }
+    </style>
+    
+    <script>
+        // Actualizar fecha automáticamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const updateDate = document.getElementById('legal-update');
+            if(updateDate) {
+                const today = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                updateDate.textContent = today.toLocaleDateString('es-ES', options);
+            }
+            
+            // Control del modal (opcional)
+            const modal = document.getElementById('legalModal');
+            const span = document.querySelector('.close-modal');
+            
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        });
+    </script>
 
     <div class="modal" id="privacyModal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>Política de Privacidad</h2>
-            <div class="modal-body">
-                <h3>1. Protección de datos</h3>
-                <p>Respetamos tu privacidad según el RGPD.</p>
+            <div id="cookies-policy" class="cookies-container">
+                <h1>POLÍTICA DE COOKIES</h1>
+                <p class="company-name"><strong>AREA DE AUTOCARAVANAS EL RINCONCITO</strong></p>
 
-                <h3>2. Datos recogidos</h3>
-                <p>Sólo recogemos datos necesarios para reservas.</p>
+                <p class="last-update">Última actualización: <span id="update-date">[Fecha]</span></p>
 
-                <h3>3. Tus derechos</h3>
-                <p>Puedes ejercer tus derechos ARCO en info@elrinconcito.com</p>
+                <section class="cookies-section">
+                    <h2><i class="fas fa-info-circle"></i> 1. ¿Qué son las cookies?</h2>
+                    <p>Las cookies son pequeños archivos de texto que se almacenan en su dispositivo (ordenador, móvil o
+                        tablet) al visitar nuestra web. Su finalidad es mejorar la experiencia de usuario, recordar
+                        preferencias y analizar el tráfico para optimizar nuestros servicios.</p>
+                </section>
+
+                <section class="cookies-section">
+                    <h2><i class="fas fa-cookie-bite"></i> 2. Tipos de cookies que utilizamos</h2>
+                    <div class="table-responsive">
+                        <table class="cookies-table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Finalidad</th>
+                                    <th>Ejemplos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Técnicas</strong></td>
+                                    <td>Funcionamiento básico de la web (sesión de usuario, seguridad).</td>
+                                    <td>Identificación en el proceso de reserva.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Analíticas</strong></td>
+                                    <td>Medir el tráfico y comportamiento de los usuarios (Google Analytics).</td>
+                                    <td>Páginas más visitadas, tiempo de estancia.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Funcionales</strong></td>
+                                    <td>Recordar preferencias (idioma, moneda, fechas de reserva).</td>
+                                    <td>Configuración de búsqueda de autocaravanas.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Publicitarias</strong></td>
+                                    <td>Mostrar anuncios personalizados (Facebook Ads, Google Ads).</td>
+                                    <td>Ofertas de alquiler de autocaravanas.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="cookies-section">
+                    <h2><i class="fas fa-check-circle"></i> 3. Consentimiento</h2>
+                    <p>Al hacer clic en <strong>"Aceptar Cookies"</strong>, usted autoriza el uso de todas las cookies
+                        no técnicas. Puede gestionar o revocar su consentimiento en cualquier momento desde el <a
+                            href="#cookie-settings" class="cookie-link">Panel de Configuración de Cookies</a> o
+                        ajustando la configuración de su navegador.</p>
+                </section>
+
+                <section class="cookies-section">
+                    <h2><i class="fas fa-ban"></i> 4. Cómo deshabilitar cookies</h2>
+                    <ul class="disable-list">
+                        <li><strong>Navegadores web</strong>:
+                            <a href="https://support.google.com/chrome/answer/95647" target="_blank"
+                                rel="noopener">Chrome</a>,
+                            <a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-sitios-web-rastrear-preferencias"
+                                target="_blank" rel="noopener">Firefox</a>,
+                            <a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" target="_blank"
+                                rel="noopener">Safari</a>
+                        </li>
+                        <li><strong>Herramientas de terceros</strong>:
+                            <ul>
+                                <li>Google Analytics: <a href="https://tools.google.com/dlpage/gaoptout" target="_blank"
+                                        rel="noopener">Opt-out</a></li>
+                                <li>Facebook: <a href="https://www.facebook.com/adpreferences" target="_blank"
+                                        rel="noopener">Configuración de anuncios</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="cookies-section">
+                    <h2><i class="fas fa-exclamation-triangle"></i> 5. Cambios en la política</h2>
+                    <p>Nos reservamos el derecho de modificar esta política. Las actualizaciones se publicarán en esta
+                        página con la nueva fecha de revisión.</p>
+                </section>
+
+                <section class="cookies-section contact-section">
+                    <h2><i class="fas fa-envelope"></i> 6. Contacto</h2>
+                    <p>Para preguntas sobre cookies, escriba a: <a href="mailto:contacto@tudominio.com"
+                            class="contact-link">contacto@tudominio.com</a> o consulte nuestra <a
+                            href="/politica-privacidad" class="privacy-link">Política de Privacidad</a>.</p>
+                </section>
             </div>
+
+            <style>
+                .cookies-container {
+                    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+                    max-width: 900px;
+                    margin: 30px auto;
+                    padding: 25px;
+                    background-color: #fff;
+                    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+                    border-radius: 8px;
+                    color: #333;
+                    line-height: 1.6;
+                }
+
+                .cookies-container h1 {
+                    color: #2c3e50;
+                    border-bottom: 2px solid #3498db;
+                    padding-bottom: 12px;
+                    margin-bottom: 20px;
+                    font-size: 28px;
+                }
+
+                .company-name {
+                    font-size: 18px;
+                    color: #2980b9;
+                    margin-bottom: 5px;
+                }
+
+                .last-update {
+                    font-style: italic;
+                    color: #7f8c8d;
+                    margin-bottom: 30px;
+                    font-size: 14px;
+                }
+
+                .cookies-section {
+                    margin-bottom: 30px;
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid #eee;
+                }
+
+                .cookies-section:last-child {
+                    border-bottom: none;
+                }
+
+                .cookies-section h2 {
+                    color: #2980b9;
+                    font-size: 22px;
+                    margin-bottom: 15px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .cookies-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 20px 0;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+                }
+
+                .cookies-table th {
+                    background-color: #3498db;
+                    color: white;
+                    padding: 12px 15px;
+                    text-align: left;
+                }
+
+                .cookies-table td {
+                    padding: 12px 15px;
+                    border-bottom: 1px solid #ddd;
+                    vertical-align: top;
+                }
+
+                .cookies-table tr:nth-child(even) {
+                    background-color: #f8f9fa;
+                }
+
+                .cookies-table tr:hover {
+                    background-color: #f1f8fe;
+                }
+
+                .disable-list {
+                    padding-left: 20px;
+                }
+
+                .disable-list li {
+                    margin-bottom: 10px;
+                }
+
+                .cookie-link,
+                .contact-link,
+                .privacy-link {
+                    color: #3498db;
+                    font-weight: 500;
+                    transition: color 0.3s;
+                }
+
+                .cookie-link:hover,
+                .contact-link:hover,
+                .privacy-link:hover {
+                    color: #1a5276;
+                    text-decoration: underline;
+                }
+
+                .contact-section {
+                    background-color: #f8f9fa;
+                    padding: 15px 20px;
+                    border-radius: 5px;
+                }
+
+                @media (max-width: 768px) {
+                    .cookies-container {
+                        padding: 15px;
+                        margin: 15px;
+                    }
+
+                    .cookies-table {
+                        display: block;
+                        overflow-x: auto;
+                    }
+                }
+            </style>
+
+            <script>
+                // Actualizar fecha automáticamente
+                document.addEventListener('DOMContentLoaded', function () {
+                    const updateDate = document.getElementById('update-date');
+                    if (updateDate) {
+                        const today = new Date();
+                        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                        updateDate.textContent = today.toLocaleDateString('es-ES', options);
+                    }
+                });
+            </script>
         </div>
     </div>
 
@@ -375,19 +742,6 @@
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
             menuToggle.classList.toggle('open');
-        });
-
-        // Selector de idiomas
-        const languageBtn = document.querySelector('.language-btn');
-        const languageDropdown = document.querySelector('.language-dropdown');
-
-        languageBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            languageDropdown.classList.toggle('show');
-        });
-
-        document.addEventListener('click', () => {
-            languageDropdown.classList.remove('show');
         });
 
         // Cookies Banner
@@ -460,13 +814,11 @@
     </script>
 </body>
 
-<!-- Al final del body, después de todo el contenido -->
-
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
-<!-- Tus otros scripts -->
+<!-- Otros scripts -->
 <script src="js/main.js"></script>
-<script src="js/main.js"></script>
+
 
 </html>
