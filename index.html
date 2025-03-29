@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <!-- Cookies Banner -->
+    <!-- COOCKIES BANNER -->
     <div class="cookies-banner" id="cookiesBanner">
         <div class="container">
             <p>Usamos cookies para mejorar tu experiencia. <a href="#politica-cookies">Más información</a></p>
@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <!-- Navegación -->
+    <!-- NAVEGACION -->
     <nav class="navbar">
         <div class="container">
             <div class="brand">
@@ -33,7 +33,9 @@
                 <a href="#servicios">Servicios</a>
                 <a href="#galeria">Galería</a>
                 <a href="#contacto">Contacto</a>
-                <a href="tel:+34666555444" class="btn btn-nav">Llamar</a> <i class="fas fa-phone"></i>
+                <a href="tel:+34666555444" class="btn btn-nav"><i class="fas fa-phone"></i> Llamar</a>
+                <a href="login.html" class="nav-link"><i class="fas fa-user"></i> Acceso Clientes</a>
+
 
                 <!-- Selector de idiomas -->
                 <div class="language-selector" style="position: relative; display: inline-block;"></div>
@@ -47,15 +49,12 @@
                         src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
                         </script>
                 </button>
-
             </div>
-
         </div>
 
         <button class="menu-toggle" id="menuToggle">
             <i class="fas fa-bars"></i>
         </button>
-        </div>
     </nav>
 
     <!-- Hero Section -->
@@ -70,12 +69,13 @@
         </div>
     </header>
 
-    <!-- Servicios -->
+    <!-- SERVICIOS -->
     <section class="services" id="servicios">
         <div class="container">
             <h2 class="section-title">Nuestros Servicios</h2>
 
             <div class="services-grid">
+
                 <!-- Servicio 1 -->
                 <div class="service-card">
                     <div class="service-icon">
@@ -131,7 +131,7 @@
         </div>
     </section>
 
-    <!-- Galería -->
+    <!-- GALERIA -->
     <section class="gallery" id="galeria">
         <div class="container">
             <h2 class="section-title">Nuestras Instalaciones</h2>
@@ -165,7 +165,7 @@
         </div>
     </section>
 
-    <!-- Contacto -->
+    <!-- CONTACTO -->
     <section class="contact" id="contacto">
         <div class="container">
             <h2 class="section-title">Contacto / Solicitud Reserva</h2>
@@ -183,7 +183,7 @@
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-x"></i></a>
                     </div>
-                    <!-- Dentro de tu sección de contacto, después de .contact-info -->
+                    <!-- MAPA DE UBICACION-->
                     <div class="contact-map">
                         <br>
                         <h3>¿Dónde estamos?</h3>
@@ -230,7 +230,7 @@
                         </div>
                     </div>
 
-                    <!-- Datos de reserva -->
+                    <!-- DATOS DE RESERVA -->
                     <div class="form-row">
                         <div class="form-group">
                             <label for="checkin">Fecha de llegada*</label>
@@ -260,7 +260,7 @@
                         </div>
                     </div>
 
-                    <!-- Servicios adicionales -->
+                    <!-- SERVICIOS ADICIONALES -->
                     <div class="form-group">
                         <label>Servicios adicionales:</label>
                         <div class="checkbox-group">
@@ -292,7 +292,7 @@
                 </form>
     </section>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -332,7 +332,7 @@
         </div>
     </footer>
 
-    <!-- Botones flotantes -->
+    <!-- BOTONES FLOTANTES -->
     <a href="https://wa.me/34666555444" class="float-btn whatsapp-btn">
         <i class="fab fa-whatsapp"></i>
     </a>
@@ -341,7 +341,7 @@
         <i class="fas fa-arrow-up"></i>
     </a>
 
-    <!-- Modales -->
+    <!-- MODALES -->
     <div class="modal" id="legalModal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
@@ -605,6 +605,7 @@
                 </section>
             </div>
 
+            <!-- ESTILO FUERA DE CSS PARA POPUP DE COOCKIES-->
             <style>
                 .cookies-container {
                     font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
@@ -822,10 +823,14 @@
     </script>
 </body>
 
-<!-- EmailJS SDK -->
+<!--SCRIPTS JS FIREBASE Y FIRESTORE-->
+<script type="module" src="firebase-config.js"></script>
+<script type="module" src="firestore-operations.js"></script>
+
+<!-- EMAILJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
-<!-- Otros scripts -->
+<!-- SCRIPT MAIN.JS -->
 <script src="js/main.js"></script>
 
 

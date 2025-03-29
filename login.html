@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Login - Firebase</title>
+
+    <!-- ESTILOS FUERA DE CSS PARA ESTA PAGINA -->
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 200px;
+            margin: 0 auto;
+            /* Centrado mágico */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid #4285F4;
+            color: #4285F4;
+            font-weight: bold;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #3367d6;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .success-message {
+            color: green;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .user-profile {
+            display: none;
+            text-align: center;
+        }
+
+        .user-profile h2 {
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .user-info p {
+            margin: 8px 0;
+        }
+
+        .logout-btn {
+            background-color: #f44336;
+        }
+
+        .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Selector de idiomas -->
+    <div class="language-selector" style="position: relative; display: inline-block;"></div>
+    <button class="language-btn" id="google_translate_element">
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({ pageLanguage: 'es', includedLanguages: 'es,en,de,fr,it', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true }, 'google_translate_element');
+            }
+        </script>
+        <script type="text/javascript"
+            src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+            </script>
+    </button>
+
+    <div class="container" id="auth-container">
+        <div class="brand">
+            <img src="img/logo.png" alt="AC El Rinconcito" class="logo">
+        </div>
+        <h1>AC El Rinconcito <br>Gestion de usuarios</h1>
+
+        <div class="tabs">
+            <div class="tab active" id="login-tab">Iniciar Sesión</div>
+            <div class="tab" id="register-tab">Registrarse</div>
+        </div>
+
+        <!-- Formulario de Login -->
+        <div class="form-section active" id="login-form">
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" placeholder="tu@email.com">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Contraseña</label>
+                <input type="password" id="login-password" placeholder="Contraseña">
+            </div>
+            <button id="login-button">Iniciar Sesión</button>
+            <div id="login-error" class="error-message"></div>
+        </div>
+
+        <!-- Formulario de Registro -->
+        <div class="form-section" id="register-form">
+            <div class="form-group">
+                <label for="register-name">Nombre</label>
+                <input type="text" id="register-name" placeholder="Tu nombre">
+            </div>
+            <div class="form-group">
+                <label for="register-email">Email</label>
+                <input type="email" id="register-email" placeholder="tu@email.com">
+            </div>
+            <div class="form-group">
+                <label for="register-password">Contraseña</label>
+                <input type="password" id="register-password" placeholder="Contraseña (mín. 8 caracteres)">
+            </div>
+            <div class="form-group">
+                <label for="register-password-confirm">Confirmar Contraseña</label>
+                <input type="password" id="register-password-confirm" placeholder="Confirma tu contraseña">
+            </div>
+            <button id="register-button">Crear Cuenta</button>
+            <div id="register-error" class="error-message"></div>
+            <div id="register-success" class="success-message"></div>
+        </div>
+    </div>
+
+    <!-- Perfil de Usuario (visible solo cuando está autenticado) -->
+    <div class="container user-profile" id="user-profile">
+        <h2>Bienvenido a tu perfil</h2>
+        <div class="user-info" id="user-info">
+            <p><strong>Nombre:</strong> <span id="profile-name"></span></p>
+            <p><strong>Email:</strong> <span id="profile-email"></span></p>
+            <p><strong>ID de Usuario:</strong> <span id="profile-uid"></span></p>
+        </div>
+        <button class="logout-btn" id="logout-button">Cerrar Sesión</button>
+    </div>
+
+    <!-- Importar Firebase -->
+    <script type="module">
+        // Importar las funciones de Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            signOut,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        import {
+            getFirestore,
+            doc,
+            setDoc,
+            getDoc
+        } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_AUTH_DOMAIN",
+            projectId: "TU_PROJECT_ID",
+            storageBucket: "TU_STORAGE_BUCKET",
+            messagingSenderId: "TU_MESSAGING_SENDER_ID",
+            appId: "TU_APP_ID"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Elementos DOM
+        const loginTab = document.getElementById("login-tab");
+        const registerTab = document.getElementById("register-tab");
+        const loginForm = document.getElementById("login-form");
+        const registerForm = document.getElementById("register-form");
+        const authContainer = document.getElementById("auth-container");
+        const userProfile = document.getElementById("user-profile");
+
+        // Cambiar entre formularios de login y registro
+        loginTab.addEventListener("click", () => {
+            loginTab.classList.add("active");
+            registerTab.classList.remove("active");
+            loginForm.classList.add("active");
+            registerForm.classList.remove("active");
+        });
+
+        registerTab.addEventListener("click", () => {
+            registerTab.classList.add("active");
+            loginTab.classList.remove("active");
+            registerForm.classList.add("active");
+            loginForm.classList.remove("active");
+        });
+
+        // Función para registrar un nuevo usuario
+        document.getElementById("register-button").addEventListener("click", async () => {
+            const name = document.getElementById("register-name").value;
+            const email = document.getElementById("register-email").value;
+            const password = document.getElementById("register-password").value;
+            const passwordConfirm = document.getElementById("register-password-confirm").value;
+            const errorElement = document.getElementById("register-error");
+            const successElement = document.getElementById("register-success");
+
+            // Limpiar mensajes previos
+            errorElement.textContent = "";
+            successElement.textContent = "";
+
+            // Validaciones
+            if (!name || !email || !password) {
+                errorElement.textContent = "Todos los campos son obligatorios";
+                return;
+            }
+
+            if (password.length < 6) {
+                errorElement.textContent = "La contraseña debe tener al menos 6 caracteres";
+                return;
+            }
+
+            if (password !== passwordConfirm) {
+                errorElement.textContent = "Las contraseñas no coinciden";
+                return;
+            }
+
+            try {
+                // Crear usuario en Firebase Auth
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Guardar información adicional en Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    uid: user.uid,
+                    name: name,
+                    email: email,
+                    createdAt: new Date()
+                });
+
+                successElement.textContent = "Cuenta creada correctamente. ¡Ya puedes iniciar sesión!";
+
+                // Limpiar formulario
+                document.getElementById("register-name").value = "";
+                document.getElementById("register-email").value = "";
+                document.getElementById("register-password").value = "";
+                document.getElementById("register-password-confirm").value = "";
+
+                // Cambiar a la pestaña de login
+                setTimeout(() => {
+                    loginTab.click();
+                }, 2000);
+
+            } catch (error) {
+                let errorMessage = "Error al crear la cuenta";
+
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = "Este email ya está registrado";
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = "Email no válido";
+                        break;
+                    default:
+                        errorMessage = `Error: ${error.message}`;
+                }
+
+                errorElement.textContent = errorMessage;
+                console.error("Error al registrar:", error);
+            }
+        });
+
+        // Función para iniciar sesión
+        document.getElementById("login-button").addEventListener("click", async () => {
+            const email = document.getElementById("login-email").value;
+            const password = document.getElementById("login-password").value;
+            const errorElement = document.getElementById("login-error");
+
+            // Limpiar mensaje de error previo
+            errorElement.textContent = "";
+
+            // Validaciones
+            if (!email || !password) {
+                errorElement.textContent = "Debes ingresar email y contraseña";
+                return;
+            }
+
+            try {
+                // Intentar login en Firebase Auth
+                await signInWithEmailAndPassword(auth, email, password);
+                // El cambio de vista lo maneja el listener de onAuthStateChanged
+            } catch (error) {
+                let errorMessage = "Error al iniciar sesión";
+
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        errorMessage = "Email no válido";
+                        break;
+                    case 'auth/user-not-found':
+                    case 'auth/wrong-password':
+                        errorMessage = "Email o contraseña incorrectos";
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = "Demasiados intentos fallidos. Inténtalo más tarde";
+                        break;
+                    default:
+                        errorMessage = `Error: ${error.message}`;
+                }
+
+                errorElement.textContent = errorMessage;
+                console.error("Error al iniciar sesión:", error);
+            }
+        });
+
+        // Función para cerrar sesión
+        document.getElementById("logout-button").addEventListener("click", async () => {
+            try {
+                await signOut(auth);
+                // El cambio de vista lo maneja el listener de onAuthStateChanged
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
+            }
+        });
+
+        // Observer para cambios en el estado de autenticación
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Usuario autenticado
+                // Ocultar formularios de login/registro
+                authContainer.style.display = "none";
+
+                // Mostrar perfil de usuario
+                userProfile.style.display = "block";
+
+                // Cargar información del usuario desde Firestore
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        document.getElementById("profile-name").textContent = userData.name || "No disponible";
+                        document.getElementById("profile-email").textContent = userData.email;
+                        document.getElementById("profile-uid").textContent = userData.uid;
+                    } else {
+                        // Si el documento no existe en Firestore pero el usuario está autenticado
+                        document.getElementById("profile-name").textContent = "No disponible";
+                        document.getElementById("profile-email").textContent = user.email;
+                        document.getElementById("profile-uid").textContent = user.uid;
+                    }
+                } catch (error) {
+                    console.error("Error al cargar datos del usuario:", error);
+                }
+            } else {
+                // Usuario no autenticado
+                // Mostrar formularios de login/registro
+                authContainer.style.display = "block";
+
+                // Ocultar perfil de usuario
+                userProfile.style.display = "none";
+
+                // Limpiar campos de formulario
+                document.getElementById("login-email").value = "";
+                document.getElementById("login-password").value = "";
+            }
+        });
+    </script>
+</body>
+
+</html>
