@@ -28,6 +28,7 @@ La aplicación móvil permitirá a los usuarios:
 ac-el-rinconcito/
 ├── web/                  # Sitio web actual
 │   ├── index.html        # Página principal
+|   ├── login.html        # Página acc.usuarios / registro
 │   ├── css/              # Estilos CSS
 │   └── img/              # Imágenes y recursos
 │
