@@ -240,12 +240,14 @@
 
         // Configuración de Firebase
         const firebaseConfig = {
-            apiKey: "TU_API_KEY",
-            authDomain: "TU_AUTH_DOMAIN",
-            projectId: "TU_PROJECT_ID",
-            storageBucket: "TU_STORAGE_BUCKET",
-            messagingSenderId: "TU_MESSAGING_SENDER_ID",
-            appId: "TU_APP_ID"
+            apiKey: "AIzaSyD-Z1l1VZHaeVCNoQPXwFUcEvJYxrx0ASQ",
+            authDomain: "tfg-ac-el-rinconcito.firebaseapp.com",
+            databaseURL: "https://tfg-ac-el-rinconcito-default-rtdb.firebaseio.com",
+            projectId: "tfg-ac-el-rinconcito",
+            storageBucket: "tfg-ac-el-rinconcito.firebasestorage.app",
+            messagingSenderId: "810954301932",
+            appId: "1:810954301932:web:56f0627af27d602cf160c9",
+            measurementId: "G-7HP3704NDC"
         };
 
         // Inicializar Firebase
@@ -311,7 +313,7 @@
                 const user = userCredential.user;
 
                 // Guardar información adicional en Firestore
-                await setDoc(doc(db, "users", user.uid), {
+                await setDoc(doc(db, "customers", user.uid), {
                     uid: user.uid,
                     name: name,
                     email: email,
@@ -414,12 +416,13 @@
 
                 // Cargar información del usuario desde Firestore
                 try {
-                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    const userDoc = await getDoc(doc(db, "customers", user.uid));
                     if (userDoc.exists()) {
                         const userData = userDoc.data();
                         document.getElementById("profile-name").textContent = userData.name || "No disponible";
-                        document.getElementById("profile-email").textContent = userData.email;
+                        document.getElementById("profile-surname").textContent = userData.surname;
                         document.getElementById("profile-uid").textContent = userData.uid;
+                        document.getElementById("profile-email").textContent = userData.email || "No disponible"
                     } else {
                         // Si el documento no existe en Firestore pero el usuario está autenticado
                         document.getElementById("profile-name").textContent = "No disponible";
