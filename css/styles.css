@@ -938,7 +938,7 @@ select:focus:invalid {
 
 /* Ejemplo aplicado a tu hero section (reemplaza el actual) */
 .hero {
-    url('img/hero-parallax.jpg') fixed center/cover;
+    background: url('img/hero-parallax.jpg') fixed center/cover;
     height: 100vh;
     display: flex;
     align-items: center;
