@@ -1,12 +1,55 @@
-// 1. Configuración (REMPLAZA CON TUS DATOS REALES)
+// Añadir este código para manejar el estado de autenticación
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, doc, setDoc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+const auth = getAuth();
+const db = getFirestore();
+
+onAuthStateChanged(auth, (user) => {
+    const loginMessage = document.getElementById('loginMessage');
+    const formContent = document.getElementById('formContent');
+    const navUserLink = document.querySelector('.nav-link');
+
+    if (user) {
+        // Usuario autenticado
+        if (loginMessage) loginMessage.style.display = 'none';
+        if (formContent) {
+            formContent.classList.remove('disabled');
+            formContent.style.opacity = '1';
+        }
+        if (navUserLink) {
+            navUserLink.innerHTML = `<i class="fas fa-user"></i> ${user.displayName || 'Usuario'}`;
+            navUserLink.href = '#';
+        }
+    } else {
+        // Usuario no autenticado
+        if (loginMessage) loginMessage.style.display = 'block';
+        if (formContent) formContent.classList.add('disabled');
+        if (navUserLink) {
+            navUserLink.innerHTML = `<i class="fas fa-user"></i> Acceso Clientes`;
+            navUserLink.href = 'login.html';
+        }
+    }
+});
+
+// Configuración de EmailJS
 const emailjsConfig = {
-  userId: 'GEEO4Ql6BtKkJP9hw', // Ej: 'user_AbC123xyz'
-  serviceId: 'service_f167wij', // Ej: 'service_autocaravanas'
-  templateId: 'template_ny66xxg' // Ej: 'template_reservas'
+  userId: 'GEEO4Ql6BtKkJP9hw',
+  serviceId: 'service_f167wij',
+  templateId: 'template_ny66xxg'
 };
 
-// 2. Inicialización
+// Inicialización
 emailjs.init(emailjsConfig.userId);
+
+// Añadir esta función de ayuda
+function formatearFecha(fecha) {
+    return new Date(fecha).toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
 
 // 3. Función para mostrar notificaciones bonitas
 function mostrarNotificacion(tipo, mensaje) {
@@ -30,39 +73,101 @@ function mostrarNotificacion(tipo, mensaje) {
   }, 5000);
 }
 
-// 4. Manejo del formulario
+// Manejo del formulario
 document.getElementById('reservationForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   
-  const submitBtn = e.target.querySelector('button[type="submit"]');
-  const originalText = submitBtn.innerHTML;
-  
   try {
-    // Validación
+    // Verificar si el usuario está autenticado
+    if (!auth.currentUser) {
+      mostrarNotificacion('error', 'Debes iniciar sesión para realizar una reserva');
+      return;
+    }
+
+    // Validación del formulario
     if (!validarFormulario()) return;
+
+    const userId = auth.currentUser.uid;
     
-    // Estado de carga
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-    
-    // Enviar formulario
-    const response = await emailjs.sendForm(
+    // 1. Primero guardar/actualizar información del vehículo
+    const vehiculoData = {
+      tipo: document.getElementById('vehicle-type').value,
+      longitud: document.getElementById('vehicle-length').value,
+      marca: document.getElementById('vehicle-brand').value,
+      modelo: document.getElementById('vehicle-model').value,
+      matricula: document.getElementById('vehicle-plate').value,
+      carroceria: document.getElementById('vehicle-body').value,
+      ultimaActualizacion: new Date().toISOString()
+    };
+
+    // Crear referencia al vehículo usando la matrícula como ID
+    const vehiculoRef = doc(db, `customers/${userId}/vehicles`, vehiculoData.matricula);
+    await setDoc(vehiculoRef, vehiculoData);
+
+    // 2. Luego crear la reserva vinculada al usuario y vehículo
+    const reservaData = {
+      userId: userId,
+      userEmail: auth.currentUser.email,
+      nombre: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      telefono: document.getElementById('phone').value,
+      adultos: parseInt(document.getElementById('adults').value),
+      ninos: parseInt(document.getElementById('children').value),
+      mascotas: parseInt(document.getElementById('pets').value),
+      fechaLlegada: document.getElementById('checkin').value,
+      fechaSalida: document.getElementById('checkout').value,
+      vehiculoId: vehiculoData.matricula, // Referencia al vehículo
+      serviciosAdicionales: Array.from(document.querySelectorAll('input[name="services"]:checked'))
+        .map(input => input.value),
+      comentarios: document.getElementById('message').value,
+      fechaReserva: new Date().toISOString(),
+      estado: 'pendiente'
+    };
+
+    // Guardar la reserva en la subcolección del usuario
+    const reservaRef = await addDoc(
+      collection(db, `customers/${userId}/reservas`), 
+      reservaData
+    );
+
+    // También guardar en la colección general de reservas para consulta global
+    await setDoc(doc(db, 'reservas', reservaRef.id), {
+      ...reservaData,
+      reservaId: reservaRef.id
+    });
+
+    console.log("Reserva guardada con ID:", reservaRef.id);
+
+    // Enviar email de confirmación
+    const emailResponse = await emailjs.send(
       emailjsConfig.serviceId,
       emailjsConfig.templateId,
-      this
+      {
+        reservation_id: reservaRef.id,
+        name: reservaData.nombre,
+        email: reservaData.email,
+        phone: reservaData.telefono,
+        'vehicle-type': reservaData.vehiculoId,
+        'vehicle-length': `${vehiculoData.longitud} metros`,
+        checkin: formatearFecha(reservaData.fechaLlegada),
+        checkout: formatearFecha(reservaData.fechaSalida),
+        adults: reservaData.adultos,
+        children: reservaData.ninos,
+        pets: reservaData.mascotas,
+        services: reservaData.serviciosAdicionales.length > 0 
+            ? reservaData.serviciosAdicionales.join(', ')
+            : 'Ninguno',
+        message: reservaData.comentarios || 'Sin comentarios adicionales'
+      }
     );
-    
-    console.log('Éxito:', response);
-    mostrarNotificacion('exito', 'Solicitud de Reserva enviada con éxito');
-    this.reset();
-    
+
+    console.log('Email enviado:', emailResponse);
+    mostrarNotificacion('exito', 'Reserva realizada con éxito. Se ha enviado un email de confirmación.');
+    e.target.reset();
+
   } catch (error) {
     console.error('Error:', error);
-    mostrarNotificacion('error', `Error al enviar: ${error.text || 'Por favor intente más tarde'}`);
-    
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = originalText;
+    mostrarNotificacion('error', 'Error al procesar la reserva');
   }
 });
 
@@ -75,7 +180,11 @@ function validarFormulario() {
     {id: 'checkin', nombre: 'Fecha de llegada'},
     {id: 'checkout', nombre: 'Fecha de salida'},
     {id: 'vehicle-type', nombre: 'Tipo de vehículo'},
-    {id: 'vehicle-length', nombre: 'Longitud del vehículo'}
+    {id: 'vehicle-length', nombre: 'Longitud del vehículo'},
+    {id: 'vehicle-brand', nombre: 'Marca del vehículo'},
+    {id: 'vehicle-model', nombre: 'Modelo del vehículo'},
+    {id: 'vehicle-plate', nombre: 'Matrícula'},
+    {id: 'vehicle-body', nombre: 'Tipo de carrocería'}
   ];
 
   for (const campo of camposRequeridos) {
@@ -97,4 +206,31 @@ function validarFormulario() {
   }
 
   return true;
+}
+
+async function obtenerHistorialReservas(userId) {
+  try {
+    const reservasRef = collection(db, `customers/${userId}/reservas`);
+    const reservasSnapshot = await getDocs(reservasRef);
+    
+    const reservas = [];
+    for (const doc of reservasSnapshot.docs) {
+      const reserva = doc.data();
+      
+      // Obtener datos del vehículo asociado
+      const vehiculoRef = doc(db, `customers/${userId}/vehicles`, reserva.vehiculoId);
+      const vehiculoDoc = await getDoc(vehiculoRef);
+      
+      reservas.push({
+        id: doc.id,
+        ...reserva,
+        vehiculo: vehiculoDoc.exists() ? vehiculoDoc.data() : null
+      });
+    }
+    
+    return reservas;
+  } catch (error) {
+    console.error('Error al obtener historial:', error);
+    return [];
+  }
 }

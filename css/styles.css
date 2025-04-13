@@ -997,3 +997,79 @@ select:focus:invalid {
         transform: translateX(100%);
     }
 }
+
+/* ===== FORM CONTENT ===== */
+.form-content.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.form-content.disabled input,
+.form-content.disabled select,
+.form-content.disabled textarea {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.form-content {
+    transition: opacity 0.3s ease;
+}
+
+/* Añadir al final del archivo css/styles.css */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    min-width: 200px;
+    box-shadow: var(--shadow-md);
+    border-radius: var(--border-radius);
+    padding: 8px 0;
+    z-index: 1000;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu .user-info {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 8px;
+}
+
+.dropdown-menu .user-info p {
+    margin: 0;
+    color: var(--dark);
+}
+
+.dropdown-menu .user-info .user-name {
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    color: var(--dark);
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f8f9fa;
+    color: var(--accent);
+}
+
+.dropdown-menu i {
+    margin-right: 8px;
+    width: 20px;
+    text-align: center;
+}

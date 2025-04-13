@@ -7,6 +7,7 @@
     <title>Sistema de Login - Firebase</title>
 
     <!-- ESTILOS FUERA DE CSS PARA ESTA PAGINA -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         body {
@@ -143,6 +144,97 @@
         .logout-btn:hover {
             background-color: #d32f2f;
         }
+
+        .login-success {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .login-success .logo {
+            width: 200px;
+            margin-bottom: 30px;
+        }
+
+        .success-check {
+            font-size: 64px;
+            color: #4CAF50;
+            margin: 20px 0;
+            animation: scale-in 0.5s ease-out;
+        }
+
+        .redirect-message {
+            margin-top: 30px;
+            color: #666;
+            font-style: italic;
+        }
+
+        @keyframes scale-in {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        /* Estilos para la pantalla de éxito de login */
+        .login-success {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .login-success .logo {
+            width: 200px;
+            margin-bottom: 30px;
+        }
+
+        .success-check {
+            font-size: 64px;
+            color: #4CAF50;
+            margin: 20px 0;
+            animation: scale-in 0.5s ease-out;
+        }
+
+        .success-check i {
+            display: inline-block;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .redirect-message {
+            margin-top: 20px;
+            color: #666;
+            font-style: italic;
+        }
+
+        @keyframes scale-in {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        /* Asegurarse de que el contenedor del perfil esté oculto inicialmente */
+        .user-profile {
+            display: none;
+        }
+
+        /* Mejorar la visibilidad del contador */
+        #countdown {
+            font-weight: bold;
+            color: #4285F4;
+        }
     </style>
 </head>
 
@@ -211,18 +303,24 @@
 
     <!-- Perfil de Usuario (visible solo cuando está autenticado) -->
     <div class="container user-profile" id="user-profile">
-        <h2>Bienvenido a tu perfil</h2>
-        <div class="user-info" id="user-info">
-            <p><strong>Nombre:</strong> <span id="profile-name"></span></p>
-            <p><strong>Email:</strong> <span id="profile-email"></span></p>
-            <p><strong>ID de Usuario:</strong> <span id="profile-uid"></span></p>
+        <div class="login-success">
+            <img src="img/logo.png" alt="AC El Rinconcito" class="logo">
+            <div class="success-check">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>¡Inicio de sesión exitoso!</h2>
+            <div class="user-info">
+                <p><strong>Nombre:</strong> <span id="profile-name">Cargando...</span></p>
+                <p><strong>Email:</strong> <span id="profile-email">Cargando...</span></p>
+            </div>
+            <p class="redirect-message">
+                Redirigiendo al inicio en <span id="countdown">3</span> segundos...
+            </p>
         </div>
-        <button class="logout-btn" id="logout-button">Cerrar Sesión</button>
     </div>
 
     <!-- Importar Firebase -->
     <script type="module">
-        // Importar las funciones de Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import {
             getAuth,
@@ -358,19 +456,43 @@
             const password = document.getElementById("login-password").value;
             const errorElement = document.getElementById("login-error");
 
-            // Limpiar mensaje de error previo
             errorElement.textContent = "";
 
-            // Validaciones
             if (!email || !password) {
                 errorElement.textContent = "Debes ingresar email y contraseña";
                 return;
             }
 
             try {
-                // Intentar login en Firebase Auth
-                await signInWithEmailAndPassword(auth, email, password);
-                // El cambio de vista lo maneja el listener de onAuthStateChanged
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Obtener datos del usuario desde Firestore
+                const userDoc = await getDoc(doc(db, "customers", user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+
+                    // Actualizar la información en el perfil
+                    document.getElementById("profile-name").textContent = userData.name;
+                    document.getElementById("profile-email").textContent = userData.email;
+                }
+
+                // Mostrar pantalla de éxito
+                authContainer.style.display = "none";
+                userProfile.style.display = "block";
+
+                // Iniciar cuenta regresiva y redirección
+                let countdown = 3;
+                const countdownElement = document.getElementById('countdown');
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        window.location.href = 'index.html';
+                    }
+                }, 1000);
+
             } catch (error) {
                 let errorMessage = "Error al iniciar sesión";
 
