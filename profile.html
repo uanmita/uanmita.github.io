@@ -8,79 +8,195 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        .profile-container {
-            max-width: 1200px;
-            margin: 100px auto;
-            padding: 20px;
+        /* Actualizar variables de color */
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --primary-light: #5faee3;
+            --secondary: #e7b73c;
+            --accent: #3498db;
+            --light: #ecf0f1;
+            --dark: #212529;
+            --white: #ffffff;
+            --gray: #7f8c8d;
+            --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.3);
+            --transition: all 0.3s ease;
+            --border-radius: 8px;
+        }
+
+        .profile-page {
+            padding-top: 80px;
+            min-height: 100vh;
+            background-color: #f5f5f5;
         }
 
         .profile-header {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: var(--shadow-sm);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 40px 0;
             margin-bottom: 30px;
+        }
+
+        .profile-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             align-items: center;
             gap: 30px;
+            color: white;
+            padding: 0 20px;
         }
 
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            background: var(--accent);
+        .profile-logo {
+            width: 150px;
+            margin-right: auto;
+        }
+
+        .profile-photo-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
+            overflow: hidden;
+            border: 4px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-upload-btn {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
             color: white;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .photo-upload-btn i.fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .profile-info h1 {
-            margin: 0 0 10px 0;
-            color: var(--dark);
+            margin: 0;
+            font-size: 2em;
         }
 
-        .profile-email {
-            color: var(--gray);
+        .profile-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
         }
 
-        .profile-tabs {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .profile-tab {
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
+        .profile-sidebar {
             background: white;
-            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 140px);
         }
 
-        .profile-tab.active {
-            border-color: var(--accent);
-            color: var(--accent);
-            font-weight: bold;
+        .profile-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            margin-bottom: 20px;
+        }
+
+        .profile-menu li {
+            margin-bottom: 10px;
+        }
+
+        .profile-menu li:last-child {
+            margin-top: auto;
+        }
+
+        .profile-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .profile-menu a:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .profile-menu a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .profile-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .back-to-web {
+            background: var(--secondary);
+            color: white;
+            margin-top: 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .back-to-web:hover {
+            background: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .back-to-web i {
+            font-size: 1.1em;
+        }
+
+        .profile-main {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .tab-content {
             display: none;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: var(--shadow-sm);
         }
 
         .tab-content.active {
             display: block;
         }
 
-        .reservations-list {
+        .reservations-grid {
             display: grid;
             gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         }
 
         .reservation-card {
@@ -92,26 +208,74 @@
 
         .reservation-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-color: var(--secondary);
         }
 
-        .reservation-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+        .vehicles-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         }
 
-        .reservation-status {
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.9em;
+        .vehicle-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .btn-save {
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .btn-save:hover {
+            background: var(--secondary);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
         }
 
         .status-pending {
-            background: #fff3cd;
-            color: #856404;
+            background: var(--secondary);
+            color: white;
         }
 
         .status-confirmed {
@@ -119,149 +283,180 @@
             color: #155724;
         }
 
-        .vehicle-list {
-            display: grid;
-            gap: 20px;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        .status-completed {
+            background: var(--primary);
+            color: white;
         }
 
-        .vehicle-card {
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 20px;
+        #google_translate_element {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
         }
 
-        .vehicle-card h3 {
-            margin: 0 0 15px 0;
-            color: var(--accent);
+        /* Hide Google Translate attribution */
+        .goog-logo-link {
+            display: none !important;
+        }
+        
+        .goog-te-gadget {
+            color: transparent !important;
+        }
+
+        .goog-te-gadget .goog-te-combo {
+            color: var(--dark);
+            border: 1px solid var(--gray);
+            padding: 5px;
+            border-radius: 4px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <!-- Incluir la navegación existente -->
+    <!-- Navbar (importar el existente) -->
     <nav class="navbar">
         <!-- ... navbar existente ... -->
     </nav>
 
-    <div class="profile-container">
-        <div class="profile-header">
-            <div class="profile-avatar">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="profile-info">
-                <h1 id="userName">Cargando...</h1>
-                <p class="profile-email" id="userEmail">Cargando...</p>
-            </div>
-        </div>
-
-        <div class="profile-tabs">
-            <div class="profile-tab active" data-tab="reservations">Mis Reservas</div>
-            <div class="profile-tab" data-tab="vehicles">Mis Vehículos</div>
-            <div class="profile-tab" data-tab="settings">Configuración</div>
-        </div>
-
-        <!-- Pestaña de Reservas -->
-        <div class="tab-content active" id="reservations">
-            <div class="reservations-list" id="reservationsList">
-                <!-- Las reservas se cargarán dinámicamente aquí -->
-            </div>
-        </div>
-
-        <!-- Pestaña de Vehículos -->
-        <div class="tab-content" id="vehicles">
-            <div class="vehicle-list" id="vehicleList">
-                <!-- Los vehículos se cargarán dinámicamente aquí -->
-            </div>
-        </div>
-
-        <!-- Pestaña de Configuración -->
-        <div class="tab-content" id="settings">
-            <h2>Configuración de la cuenta</h2>
-            <form id="profileForm" class="contact-form">
-                <div class="form-group">
-                    <label for="updateName">Nombre</label>
-                    <input type="text" id="updateName" required>
+    <div class="profile-page">
+        <header class="profile-header">
+            <div class="profile-header-content">
+                <img src="img/logo.png" alt="Logo" class="profile-logo">
+                <div class="profile-photo-container">
+                    <img src="img/default-avatar.png" alt="Foto de perfil" class="profile-photo" id="profilePhoto">
+                    <label for="photoInput" class="photo-upload-btn">
+                        <i class="fas fa-camera"></i> Cambiar foto
+                    </label>
+                    <input type="file" id="photoInput" hidden accept="image/*">
                 </div>
-                <div class="form-group">
-                    <label for="updateEmail">Email</label>
-                    <input type="email" id="updateEmail" disabled>
+                <div class="profile-info">
+                    <h1 id="userName">Cargando...</h1>
+                    <p id="userEmail">Cargando...</p>
                 </div>
-                <button type="submit" class="btn btn-primary">Actualizar perfil</button>
-            </form>
+            </div>
+        </header>
+
+        <div class="profile-content">
+            <aside class="profile-sidebar">
+                <ul class="profile-menu">
+                    <li><a href="#reservas" class="active" data-tab="reservas">
+                        <i class="fas fa-calendar-alt"></i> Mis Reservas
+                    </a></li>
+                    <li><a href="#vehiculos" data-tab="vehiculos">
+                        <i class="fas fa-car"></i> Mis Vehículos
+                    </a></li>
+                    <li><a href="#personal" data-tab="personal">
+                        <i class="fas fa-user"></i> Datos Personales
+                    </a></li>
+                    <li><a href="#seguridad" data-tab="seguridad">
+                        <i class="fas fa-lock"></i> Seguridad
+                    </a></li>
+                    <li><a href="index.html" class="back-to-web">
+                        <i class="fas fa-home"></i> Volver a inicio
+                    </a></li>
+                </ul>
+            </aside>
+
+            <main class="profile-main">
+                <!-- Pestaña de Reservas -->
+                <div class="tab-content active" id="reservas">
+                    <h2>Mis Reservas</h2>
+                    <div class="reservations-grid" id="reservationsList">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+
+                <!-- Pestaña de Vehículos -->
+                <div class="tab-content" id="vehiculos">
+                    <h2>Mis Vehículos</h2>
+                    <div class="vehicles-grid" id="vehiclesList">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+
+                <!-- Pestaña de Datos Personales -->
+                <div class="tab-content" id="personal">
+                    <h2>Datos Personales</h2>
+                    <form id="personalDataForm" class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName">Nombre completo</label>
+                            <input type="text" id="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Teléfono</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Dirección</label>
+                            <input type="text" id="address">
+                        </div>
+                        <div class="form-group">
+                            <label for="city">Ciudad</label>
+                            <input type="text" id="city">
+                        </div>
+                        <div class="form-group">
+                            <label for="country">País</label>
+                            <input type="text" id="country">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn-save">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Pestaña de Seguridad -->
+                <div class="tab-content" id="seguridad">
+                    <h2>Seguridad de la cuenta</h2>
+                    <form id="securityForm" class="form-grid">
+                        <div class="form-group">
+                            <label for="currentPassword">Contraseña actual</label>
+                            <input type="password" id="currentPassword">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Nueva contraseña</label>
+                            <input type="password" id="newPassword">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirmar nueva contraseña</label>
+                            <input type="password" id="confirmPassword">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn-save">Actualizar contraseña</button>
+                        </div>
+                    </form>
+                </div>
+            </main>
         </div>
     </div>
 
+    <div id="google_translate_element"></div>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {
+                    pageLanguage: 'es',
+                    includedLanguages: 'en,fr,de,it', // Updated language list
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                },
+                'google_translate_element'
+            );
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <script type="module">
-        import { auth, db } from './firebase-config.js';
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-        import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { auth, db, storage } from './firebase-config.js';
+        import { onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        import { doc, getDoc, collection, getDocs, updateDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
 
-        // Verificar autenticación
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // Cargar datos del usuario
-            const userDoc = await getDoc(doc(db, "customers", user.uid));
-            if (userDoc.exists()) {
-                const userData = userDoc.data();
-                document.getElementById('userName').textContent = userData.name;
-                document.getElementById('userEmail').textContent = userData.email;
-                document.getElementById('updateName').value = userData.name;
-                document.getElementById('updateEmail').value = userData.email;
-            }
-
-            // Cargar reservas
-            const reservas = await obtenerHistorialReservas(user.uid);
-            const reservasList = document.getElementById('reservationsList');
-            reservasList.innerHTML = reservas.map(reserva => `
-                <div class="reservation-card">
-                    <div class="reservation-header">
-                        <h3>Reserva #${reserva.id.slice(-6)}</h3>
-                        <span class="reservation-status status-${reserva.estado}">
-                            ${reserva.estado === 'pendiente' ? 'Pendiente' : 'Confirmada'}
-                        </span>
-                    </div>
-                    <p><strong>Fechas:</strong> ${formatearFecha(reserva.fechaLlegada)} - ${formatearFecha(reserva.fechaSalida)}</p>
-                    <p><strong>Vehículo:</strong> ${reserva.vehiculo?.marca} ${reserva.vehiculo?.modelo}</p>
-                    <p><strong>Personas:</strong> ${reserva.adultos} adultos, ${reserva.ninos} niños</p>
-                </div>
-            `).join('');
-
-            // Cargar vehículos
-            const vehiculosRef = collection(db, `customers/${user.uid}/vehicles`);
-            const vehiculosSnapshot = await getDocs(vehiculosRef);
-            const vehicleList = document.getElementById('vehicleList');
-            vehicleList.innerHTML = vehiculosSnapshot.docs.map(doc => {
-                const vehiculo = doc.data();
-                return `
-                    <div class="vehicle-card">
-                        <h3>${vehiculo.marca} ${vehiculo.modelo}</h3>
-                        <p><strong>Matrícula:</strong> ${vehiculo.matricula}</p>
-                        <p><strong>Tipo:</strong> ${vehiculo.tipo}</p>
-                        <p><strong>Longitud:</strong> ${vehiculo.longitud}m</p>
-                        <p><strong>Carrocería:</strong> ${vehiculo.carroceria}</p>
-                    </div>
-                `;
-            }).join('');
-        });
-
-        // Manejo de pestañas
-        document.querySelectorAll('.profile-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remover clase active de todas las pestañas
-                document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
-                // Añadir clase active a la pestaña seleccionada
-                tab.classList.add('active');
-                document.getElementById(tab.dataset.tab).classList.add('active');
-            });
-        });
-
-        // Función para formatear fechas
+        // Funciones de utilidad
         function formatearFecha(fecha) {
             return new Date(fecha).toLocaleDateString('es-ES', {
                 year: 'numeric',
@@ -269,6 +464,203 @@
                 day: 'numeric'
             });
         }
+
+        function mostrarNotificacion(tipo, mensaje) {
+            const notificacion = document.createElement('div');
+            notificacion.className = `notificacion ${tipo}`;
+            notificacion.textContent = mensaje;
+            document.body.appendChild(notificacion);
+            
+            setTimeout(() => {
+                notificacion.remove();
+            }, 3000);
+        }
+
+        // Manejo de pestañas
+        document.querySelectorAll('.profile-menu a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Si es el botón de volver, permitir la navegación
+                if (link.classList.contains('back-to-web')) {
+                    return true; // Permite la navegación por defecto
+                }
+                
+                e.preventDefault();
+                
+                // Actualizar clases activas solo para las pestañas
+                document.querySelectorAll('.profile-menu a:not(.back-to-web)').forEach(a => a.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                
+                link.classList.add('active');
+                document.getElementById(link.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Cargar datos del usuario
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Cargar datos del perfil
+                const userDoc = await getDoc(doc(db, "customers", user.uid));
+                const userData = userDoc.exists() ? userDoc.data() : {};
+
+                // Actualizar UI con datos del usuario
+                document.getElementById('userName').textContent = userData.name || 'Usuario';
+                document.getElementById('userEmail').textContent = user.email;
+                document.getElementById('fullName').value = userData.name || '';
+                document.getElementById('phone').value = userData.phone || '';
+                document.getElementById('address').value = userData.address || '';
+                document.getElementById('city').value = userData.city || '';
+                document.getElementById('country').value = userData.country || '';
+
+                if (userData.photoURL) {
+                    document.getElementById('profilePhoto').src = userData.photoURL;
+                }
+
+                // Cargar reservas
+                const reservasRef = collection(db, `customers/${user.uid}/reservas`);
+                const reservasQuery = query(reservasRef, orderBy('fechaReserva', 'desc'));
+                const reservasSnapshot = await getDocs(reservasQuery);
+                
+                const reservasList = document.getElementById('reservationsList');
+                reservasList.innerHTML = '';
+
+                reservasSnapshot.forEach(doc => {
+                    const reserva = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'reservation-card';
+                    card.innerHTML = `
+                        <div class="reservation-header">
+                            <h3>Reserva #${doc.id.slice(-6)}</h3>
+                            <span class="status-badge status-${reserva.estado}">${reserva.estado}</span>
+                        </div>
+                        <p><strong>Fechas:</strong> ${formatearFecha(reserva.fechaLlegada)} - ${formatearFecha(reserva.fechaSalida)}</p>
+                        <p><strong>Personas:</strong> ${reserva.adultos} adultos, ${reserva.ninos} niños</p>
+                        <p><strong>Servicios:</strong> ${reserva.serviciosAdicionales.join(', ') || 'Ninguno'}</p>
+                    `;
+                    reservasList.appendChild(card);
+                });
+
+                // Cargar vehículos
+                const vehiculosRef = collection(db, `customers/${user.uid}/vehicles`);
+                const vehiculosSnapshot = await getDocs(vehiculosRef);
+                
+                const vehiclesList = document.getElementById('vehiclesList');
+                vehiclesList.innerHTML = '';
+
+                vehiculosSnapshot.forEach(doc => {
+                    const vehiculo = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'vehicle-card';
+                    card.innerHTML = `
+                        <h3>${vehiculo.marca} ${vehiculo.modelo}</h3>
+                        <p><strong>Matrícula:</strong> ${vehiculo.matricula}</p>
+                        <p><strong>Tipo:</strong> ${vehiculo.tipo}</p>
+                        <p><strong>Longitud:</strong> ${vehiculo.longitud}m</p>
+                        <p><strong>Carrocería:</strong> ${vehiculo.carroceria}</p>
+                    `;
+                    vehiclesList.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error('Error al cargar datos:', error);
+                mostrarNotificacion('error', 'Error al cargar los datos');
+            }
+        });
+
+        // Manejar cambio de foto de perfil
+        document.getElementById('photoInput').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                // Mostrar indicador de carga
+                const uploadBtn = document.querySelector('.photo-upload-btn');
+                uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo...';
+
+                // Crear nombre único para la imagen
+                const fileExtension = file.name.split('.').pop();
+                const fileName = `${auth.currentUser.uid}_${Date.now()}.${fileExtension}`;
+                
+                // Crear referencia en Storage
+                const storageRef = ref(storage, `profile-photos/${fileName}`);
+                
+                // Subir archivo
+                const snapshot = await uploadBytes(storageRef, file);
+                console.log('Archivo subido:', snapshot);
+                
+                // Obtener URL
+                const photoURL = await getDownloadURL(storageRef);
+                console.log('URL de la foto:', photoURL);
+
+                // Actualizar UI
+                document.getElementById('profilePhoto').src = photoURL;
+
+                // Actualizar en Firestore
+                await updateDoc(doc(db, "customers", auth.currentUser.uid), {
+                    photoURL: photoURL,
+                    updatedAt: new Date().toISOString()
+                });
+
+                // Restaurar botón
+                uploadBtn.innerHTML = '<i class="fas fa-camera"></i> Cambiar foto';
+                
+                mostrarNotificacion('exito', 'Foto de perfil actualizada');
+            } catch (error) {
+                console.error('Error al subir foto:', error);
+                mostrarNotificacion('error', 'Error al actualizar la foto: ' + error.message);
+                
+                // Restaurar botón en caso de error
+                document.querySelector('.photo-upload-btn').innerHTML = '<i class="fas fa-camera"></i> Cambiar foto';
+            }
+        });
+
+        // Manejar actualización de datos personales
+        document.getElementById('personalDataForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            try {
+                await updateDoc(doc(db, "customers", auth.currentUser.uid), {
+                    name: document.getElementById('fullName').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    country: document.getElementById('country').value,
+                    updatedAt: new Date().toISOString()
+                });
+
+                mostrarNotificacion('exito', 'Datos actualizados correctamente');
+            } catch (error) {
+                console.error('Error al actualizar datos:', error);
+                mostrarNotificacion('error', 'Error al actualizar los datos');
+            }
+        });
+
+        // Manejar cambio de contraseña
+        document.getElementById('securityForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                mostrarNotificacion('error', 'Las contraseñas no coinciden');
+                return;
+            }
+
+            try {
+                await updatePassword(auth.currentUser, newPassword);
+                mostrarNotificacion('exito', 'Contraseña actualizada correctamente');
+                document.getElementById('securityForm').reset();
+            } catch (error) {
+                console.error('Error al cambiar contraseña:', error);
+                mostrarNotificacion('error', 'Error al cambiar la contraseña');
+            }
+        });
     </script>
 </body>
 </html>
+``` 
