@@ -395,8 +395,8 @@
                 </div>
                 <div class="footer-col">
                     <h3>Legal</h3>
-                    <a href="#aviso-legal" id="legalLink">Aviso Legal</a>
-                    <a href="#politica-privacidad" id="privacyLink">Política de Cockies</a>
+                    <a href="#" id="legalLink">Aviso Legal</a>
+                    <a href="#" id="privacyLink">Política de Privacidad</a>
                 </div>
                 <div class="footer-col">
                     <h3>Contacto</h3>
@@ -952,6 +952,62 @@
 
 <!-- Script principal al final -->
 <script type="module" src="js/main.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Referencias a los elementos
+        const legalLink = document.getElementById('legalLink');
+        const privacyLink = document.getElementById('privacyLink');
+        const legalModal = document.getElementById('legalModal');
+        const privacyModal = document.getElementById('privacyModal');
+        const closeButtons = document.querySelectorAll('.close-modal');
+
+        // Event listener para el enlace de Aviso Legal
+        legalLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            legalModal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevenir scroll
+        });
+
+        // Event listener para el enlace de Política de Privacidad
+        privacyLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            privacyModal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevenir scroll
+        });
+
+        // Event listeners para los botones de cerrar
+        closeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                legalModal.style.display = 'none';
+                privacyModal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Restaurar scroll
+            });
+        });
+
+        // Cerrar modales al hacer click fuera
+        window.addEventListener('click', function(e) {
+            if (e.target == legalModal) {
+                legalModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            if (e.target == privacyModal) {
+                privacyModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Actualizar fechas automáticamente
+        const updateDates = document.querySelectorAll('#legal-update, #update-date');
+        updateDates.forEach(dateElement => {
+            if (dateElement) {
+                const today = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                dateElement.textContent = today.toLocaleDateString('es-ES', options);
+            }
+        });
+    });
+</script>
 
 </body>
 
