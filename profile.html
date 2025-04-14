@@ -26,31 +26,28 @@
             --border-radius: 8px;
         }
 
-        .profile-page {
-            padding-top: 80px;
-            min-height: 100vh;
-            background-color: #f5f5f5;
-        }
-
+        /* Header improvements */
         .profile-header {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            padding: 40px 0;
+            padding: 30px 0;
             margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
         }
 
         .profile-header-content {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 20px;
             display: flex;
             align-items: center;
             gap: 30px;
-            color: white;
-            padding: 0 20px;
+            color: var(--white);
         }
 
+        /* Actualizar el tamaño del logo */
         .profile-logo {
-            width: 150px;
-            margin-right: auto;
+            height: 120px; /* Duplicado de 60px a 120px */
+            width: auto;
         }
 
         .profile-photo-container {
@@ -61,6 +58,7 @@
             overflow: hidden;
             border: 4px solid white;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
 
         .profile-photo {
@@ -107,13 +105,35 @@
         }
 
         .profile-sidebar {
-            background: white;
-            border-radius: 8px;
+            background: var(--white);
+            border-radius: var(--border-radius);
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            min-height: calc(100vh - 140px);
+            box-shadow: var(--shadow-md);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                bottom: 0;
+                width: 80%;
+                max-width: 300px;
+                background: var(--white);
+                z-index: 1000;
+                transition: var(--transition);
+                border-radius: 0;
+                padding-top: 70px;
+                overflow-y: auto;
+            }
+
+            .profile-sidebar.active {
+                left: 0;
+                box-shadow: var(--shadow-lg);
+            }
         }
 
         .profile-menu {
@@ -292,8 +312,8 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 1000;
-            background: white;
+            z-index: 1002; /* Higher than other elements */
+            background: var(--white);
             padding: 10px;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-md);
@@ -315,13 +335,142 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
+        @media (max-width: 768px) {
+            .profile-page {
+                padding-top: 60px;
+            }
+
+            .profile-header {
+                padding: 20px 0;
+            }
+
+            .profile-header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            /* Actualizar el tamaño para móvil */
+            .profile-logo {
+                height: 80px; /* Duplicado de 40px a 80px */
+                margin-right: 0;
+            }
+
+            .profile-photo-container {
+                width: 100px;
+                height: 100px;
+            }
+
+            .profile-info h1 {
+                font-size: 1.5rem;
+            }
+
+            .profile-content {
+                grid-template-columns: 1fr;
+                padding: 15px;
+                gap: 20px;
+            }
+
+            .profile-main {
+                margin-top: 20px;
+            }
+
+            #google_translate_element {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+
+        /* Añadir botón menú móvil */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .profile-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                bottom: 0;
+                width: 80%;
+                max-width: 300px;
+                background: var(--white);
+                z-index: 1000;
+                transition: var(--transition);
+                border-radius: 0;
+                padding-top: 70px;
+                overflow-y: auto;
+            }
+
+            .profile-sidebar.active {
+                left: 0;
+                box-shadow: var(--shadow-lg);
+            }
+
+            /* Asegurarse de que el overlay está por encima del contenido pero debajo del menú */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Añadir el overlay y el botón de menú -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
     <!-- Navbar (importar el existente) -->
     <nav class="navbar">
         <!-- ... navbar existente ... -->
     </nav>
+
+    <!-- Añadir el overlay al HTML -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <div class="profile-page">
         <header class="profile-header">
@@ -658,6 +807,38 @@
             } catch (error) {
                 console.error('Error al cambiar contraseña:', error);
                 mostrarNotificacion('error', 'Error al cambiar la contraseña');
+            }
+        });
+
+        // Actualizar el script del menú móvil
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.querySelector('.profile-sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            if (menuToggle && sidebar && overlay) {
+                menuToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                    document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+                });
+
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+
+                // Cerrar menú al hacer click en enlaces
+                document.querySelectorAll('.profile-menu a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth <= 768) {
+                            sidebar.classList.remove('active');
+                            overlay.classList.remove('active');
+                            document.body.style.overflow = '';
+                        }
+                    });
+                });
             }
         });
     </script>

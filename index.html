@@ -23,12 +23,16 @@
     <!-- NAVEGACION -->
     <nav class="navbar">
         <div class="container">
-            <div class="brand">
-                <img src="img/logo.png" alt="AC El Rinconcito" class="logo">
-                <span>El Rinconcito</span>
+            <div class="navbar-title">
+                <a href="index.html" class="logo">
+                    <img src="img/logo.png" alt="AC El Rinconcito">
+                </a>
+                <h1>AC El Rinconcito</h1>
             </div>
-
-            <div class="nav-links" id="navLinks">
+            <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links">
                 <a href="#inicio" class="active">Inicio</a>
                 <a href="#servicios">Servicios</a>
                 <a href="#galeria">Galería</a>
@@ -68,10 +72,6 @@
                 </button>
             </div>
         </div>
-
-        <button class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
-        </button>
     </nav>
 
     <!-- Hero Section -->
@@ -1008,6 +1008,10 @@
         });
     });
 </script>
+
+<!-- Justo antes del cierre del body -->
+<script src="js/navbar.js"></script>
+<script type="module" src="js/main.js"></script>
 
 </body>
 

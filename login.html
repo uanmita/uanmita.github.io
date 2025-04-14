@@ -282,6 +282,52 @@
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-sm);
         }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                margin: 20px auto;
+                padding: 20px;
+            }
+
+            .brand img {
+                width: 150px;
+            }
+
+            .tabs {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .tab {
+                width: 100%;
+                text-align: center;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            input {
+                font-size: 16px; /* Previene zoom en iOS */
+            }
+
+            #google_translate_element {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                top: auto;
+            }
+
+            .back-btn {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+                z-index: 1000;
+            }
+        }
     </style>
 </head>
 
