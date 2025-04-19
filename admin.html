@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - AC El Rinconcito</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Admin Layout */
+        .admin-page {
+            padding-top: 120px;
+            min-height: 100vh;
+            background: var(--light);
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            color: var(--white);
+        }
+
+        .admin-logo {
+            height: 80px;
+            width: auto;
+        }
+
+        .header-content h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        /* Content Layout */
+        .admin-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .admin-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .admin-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .admin-menu i {
+            width: 24px;
+            margin-right: 12px;
+            font-size: 1.1em;
+        }
+
+        .admin-menu a:hover,
+        .admin-menu a.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Main Content */
+        .admin-main {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Dashboard Cards */
+        .dashboard-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid var(--light);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .dashboard-card i {
+            font-size: 2.5em;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .dashboard-card h3 {
+            font-size: 2em;
+            margin: 10px 0;
+            color: var(--dark);
+        }
+
+        .dashboard-card p {
+            color: var(--gray);
+            margin: 0;
+            font-size: 0.9em;
+        }
+
+        /* Tables */
+        .reservations-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .reservations-table th,
+        .reservations-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .reservations-table th {
+            background: var(--light);
+            font-weight: 600;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--light);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .admin-page {
+                padding-top: 80px;
+            }
+
+            .header-content {
+                padding: 0 50px;
+                justify-content: center;
+                position: relative;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .admin-content {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+
+            .admin-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                bottom: 0;
+                width: 80%;
+                max-width: 300px;
+                background: var(--white);
+                z-index: 1000;
+                transition: all 0.3s ease;
+                border-radius: 0;
+                padding: 80px 20px 20px;
+                overflow-y: auto;
+            }
+
+            .admin-sidebar.active {
+                left: 0;
+                box-shadow: var(--shadow-lg);
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
+            .dashboard-summary {
+                grid-template-columns: 1fr;  /* Una card por fila en móvil */
+                gap: 15px;  /* Reducido de 20px */
+            }
+
+            .dashboard-card {
+                padding: 15px;  /* Reducido de 20px */
+            }
+
+            .reservations-table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin: 0 -15px;  /* Compensar el padding del contenedor */
+                padding: 0 15px;
+            }
+
+            .reservations-table th,
+            .reservations-table td {
+                padding: 10px;  /* Reducido de 12px */
+                white-space: nowrap;
+            }
+
+            /* Ajustes para el formulario de precios */
+            .form-group {
+                margin-bottom: 15px;  /* Reducido de 20px */
+            }
+
+            .form-group input {
+                padding: 8px;  /* Reducido de 10px */
+                font-size: 16px;  /* Prevenir zoom en iOS */
+            }
+
+            /* Mejorar overlay */
+            .sidebar-overlay {
+                backdrop-filter: blur(2px);
+            }
+        }
+
+        /* Añadir breakpoint adicional para pantallas muy pequeñas */
+        @media (max-width: 380px) {
+            .header-content h1 {
+                font-size: 1rem;
+            }
+
+            .admin-logo {
+                height: 35px;
+            }
+        }
+
+        /* Actualizar los estilos del menú móvil */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            backdrop-filter: blur(2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="admin-page">
+        <header class="admin-header">
+            <div class="header-content">
+                <img src="img/logo.png" alt="AC El Rinconcito" class="admin-logo">
+                <h1>Panel de Administración</h1>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <aside class="admin-sidebar">
+                <ul class="admin-menu">
+                    <li>
+                        <a href="#dashboard" class="active" data-tab="dashboard">
+                            <i class="fas fa-chart-line"></i>Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#reservas" data-tab="reservas">
+                            <i class="fas fa-calendar-check"></i>Reservas
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#precios" data-tab="precios">
+                            <i class="fas fa-euro-sign"></i>Precios
+                        </a>
+                    </li>
+                    <li>
+                        <a href="index.html">
+                            <i class="fas fa-home"></i>Volver a inicio
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <main class="admin-main">
+                <!-- Dashboard -->
+                <div id="dashboard" class="tab-content active">
+                    <div class="dashboard-summary">
+                        <div class="dashboard-card">
+                            <i class="fas fa-calendar"></i>
+                            <h3 id="totalReservas">0</h3>
+                            <p>Reservas Activas</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <i class="fas fa-users"></i>
+                            <h3 id="totalClientes">0</h3>
+                            <p>Clientes Registrados</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <i class="fas fa-euro-sign"></i>
+                            <h3 id="ingresosMes">0€</h3>
+                            <p>Ingresos del Mes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reservas -->
+                <div id="reservas" class="tab-content">
+                    <table class="reservations-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Fechas</th>
+                                <th>Tipo</th>
+                                <th>Estado</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reservationsList"></tbody>
+                    </table>
+                </div>
+
+                <!-- Precios -->
+                <div id="precios" class="tab-content">
+                    <form id="pricesForm" onsubmit="return false;">
+                        <h2>Tarifas Base</h2>
+                        <div class="form-group">
+                            <label>Precio por Adulto</label>
+                            <input type="number" id="autocaravana-adult" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Precio por Niño</label>
+                            <input type="number" id="autocaravana-child" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Precio Base Vehículo</label>
+                            <input type="number" id="autocaravana-base" step="0.01">
+                        </div>
+                        
+                        <h2>Servicios Adicionales</h2>
+                        <div class="form-group">
+                            <label>Electricidad (por día)</label>
+                            <input type="number" id="electricity-rate" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Late Checkout</label>
+                            <input type="number" id="late-checkout-rate" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Vehículo Extra</label>
+                            <input type="number" id="extra-vehicle-rate" step="0.01">
+                        </div>
+                        
+                        <button type="submit" class="btn-primary" onclick="saveRates()">
+                            Guardar Cambios
+                        </button>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, query, where } 
+        from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            // ... your config here
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Auth state observer
+        auth.onAuthStateChanged(async (user) => {
+            try {
+                if (!user) {
+                    console.log('No user logged in');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                console.log('User logged in:', user.email);
+                
+                // Check admin role
+                const userDoc = await getDoc(doc(db, "customers", user.uid));
+                
+                if (!userDoc.exists()) {
+                    console.log('User document not found');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                const userData = userDoc.data();
+                console.log('User role:', userData.role);
+
+                if (userData.role !== 'admin') {
+                    console.log('User is not admin');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                console.log('Admin access granted');
+                // Load data if admin
+                await loadDashboard();
+                await loadReservations();
+                await loadRates();
+
+            } catch (error) {
+                console.error('Error checking admin access:', error);
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Data loading functions
+        async function loadDashboard() {
+            // ... existing loadDashboard code ...
+        }
+
+        async function loadReservations() {
+            // ... existing loadReservations code ...
+        }
+
+        async function loadRates() {
+            // ... existing loadRates code ...
+        }
+
+        // Helper functions
+        function formatDate(date) {
+            return new Date(date).toLocaleDateString('es-ES');
+        }
+
+        // Make functions available globally
+        window.loadDashboard = loadDashboard;
+        window.loadReservations = loadReservations;
+        window.loadRates = loadRates;
+    </script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.querySelector('.admin-sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const tabLinks = document.querySelectorAll('.admin-menu a[data-tab]');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    function toggleMenu(show) {
+        if (!sidebar || !overlay) return;
+        
+        sidebar.classList.toggle('active', show);
+        overlay.classList.toggle('active', show);
+        document.body.style.overflow = show ? 'hidden' : '';
+    }
+
+    menuToggle?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMenu(!sidebar.classList.contains('active'));
+    });
+
+    overlay?.addEventListener('click', () => {
+        toggleMenu(false);
+    });
+
+    // Manejo de pestañas y cierre de menú
+    tabLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            if (link.hasAttribute('data-tab')) {
+                e.preventDefault();
+                const tabId = link.getAttribute('data-tab');
+                
+                tabLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                tabContents.forEach(tab => {
+                    tab.style.display = tab.id === tabId ? 'block' : 'none';
+                });
+            }
+            
+            if (window.innerWidth <= 768) {
+                toggleMenu(false);
+            }
+        });
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            toggleMenu(false);
+        }
+    });
+});
+</script>
+</body>
+</html>

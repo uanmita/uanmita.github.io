@@ -23,19 +23,40 @@
     <!-- NAVEGACION -->
     <nav class="navbar">
         <div class="container">
-            <div class="brand">
-                <img src="img/logo.png" alt="AC El Rinconcito" class="logo">
-                <span>El Rinconcito</span>
+            <div class="navbar-title">
+                <a href="index.html" class="logo">
+                    <img src="img/logo.png" alt="AC El Rinconcito">
+                </a>
+                <h1>AC El Rinconcito</h1>
             </div>
-
-            <div class="nav-links" id="navLinks">
+            <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links">
                 <a href="#inicio" class="active">Inicio</a>
                 <a href="#servicios">Servicios</a>
                 <a href="#galeria">Galería</a>
                 <a href="#contacto">Contacto</a>
                 <a href="tel:+34666555444" class="btn btn-nav"><i class="fas fa-phone"></i> Llamar</a>
-                <a href="login.html" class="nav-link"><i class="fas fa-user"></i> Acceso Clientes</a>
 
+                <!-- Reemplazar el enlace del usuario en la navbar -->
+                <div class="user-dropdown">
+                    <a href="login.html" class="nav-link" id="userNavLink">
+                        <i class="fas fa-user"></i> Acceso Clientes
+                    </a>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <div class="user-info">
+                            <p class="user-name" id="dropdownUserName">Usuario</p>
+                            <p class="user-email" id="dropdownUserEmail">email@example.com</p>
+                        </div>
+                        <a href="profile.html">
+                            <i class="fas fa-user-circle"></i> Mi Perfil
+                        </a>
+                        <a href="#" id="logoutButton">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
 
                 <!-- Selector de idiomas -->
                 <div class="language-selector" style="position: relative; display: inline-block;"></div>
@@ -51,10 +72,6 @@
                 </button>
             </div>
         </div>
-
-        <button class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
-        </button>
     </nav>
 
     <!-- Hero Section -->
@@ -200,124 +217,163 @@
 
                 <!-- FORMULARIO DE CONTACTO Y RESERVA -->
                 <form class="contact-form" id="reservationForm">
-                    <!-- Datos personales -->
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name">Nombre completo*</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email*</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
+                    <!-- Mensaje de inicio de sesión -->
+                    <div id="loginMessage" class="login-message">
+                        <i class="fas fa-lock"></i>
+                        <p>Por favor, inicia sesión para realizar una reserva</p>
+                        <a href="login.html" class="btn btn-primary">Iniciar Sesión</a>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="phone">Teléfono*</label>
-                            <input type="tel" id="phone" name="phone" required>
+                    <!-- Contenido del formulario -->
+                    <div id="formContent" class="form-content disabled">
+                        <!-- Datos personales -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Nombre completo*</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email*</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="adults">Número de adultos*</label>
-                            <select id="adults" name="adults" required>
-                                <option value="">Seleccionar</option>
-                                <option value="1">1 adulto</option>
-                                <option value="2">2 adultos</option>
-                                <option value="3">3 adultos</option>
-                                <option value="4">4 adultos</option>
-                                <option value="5+">5+ adultos</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="children">Número de niños (>12 años)</label>
-                            <select id="children" name="children">
-                                <option value="0">0</option>
-                                <option value="1">1 niño</option>
-                                <option value="2">2 niños</option>
-                                <option value="3">3 niños</option>
-                                <option value="4+">4+ niños</option>
-                            </select>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Teléfono*</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="adults">Número de adultos*</label>
+                                <select id="adults" name="adults" required>
+                                    <option value="">Seleccionar</option>
+                                    <option value="1">1 adulto</option>
+                                    <option value="2">2 adultos</option>
+                                    <option value="3">3 adultos</option>
+                                    <option value="4">4 adultos</option>
+                                    <option value="5+">5+ adultos</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="pets">Número de mascotas</label>
-                            <select id="pets" name="pets">
-                                <option value="0">0</option>
-                                <option value="1">1 mascota</option>
-                                <option value="2">2 mascotas</option>
-                                <option value="3">3 mascotas</option>
-                                <option value="4+">4+ mascotas</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <!-- DATOS DE RESERVA -->
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="checkin">Fecha de llegada*</label>
-                            <input type="date" id="checkin" name="checkin" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="children">Número de niños (>12 años)</label>
+                                <select id="children" name="children">
+                                    <option value="0">0</option>
+                                    <option value="1">1 niño</option>
+                                    <option value="2">2 niños</option>
+                                    <option value="3">3 niños</option>
+                                    <option value="4+">4+ niños</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="pets">Número de mascotas</label>
+                                <select id="pets" name="pets">
+                                    <option value="0">0</option>
+                                    <option value="1">1 mascota</option>
+                                    <option value="2">2 mascotas</option>
+                                    <option value="3">3 mascotas</option>
+                                    <option value="4+">4+ mascotas</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="checkout">Fecha de salida*</label>
-                            <input type="date" id="checkout" name="checkout" required>
-                        </div>
-                    </div>
 
-                    <div class="form-row">
+                        <!-- DATOS DE RESERVA -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="checkin">Fecha de llegada*</label>
+                                <input type="date" id="checkin" name="checkin" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout">Fecha de salida*</label>
+                                <input type="date" id="checkout" name="checkout" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vehicle-type">Tipo de vehículo*</label>
+                                <select id="vehicle-type" name="vehicle-type" required>
+                                    <option value="">Seleccionar</option>
+                                    <option value="autocaravana">Autocaravana</option>
+                                    <option value="camper">Camper</option>
+                                    <option value="caravana">Caravana</option>
+                                    <option value="furgoneta">Furgoneta camperizada</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="vehicle-length">Longitud (metros)*</label>
+                                <select id="vehicle-length" name="vehicle-length" required>
+                                    <option value="">Seleccionar</option>
+                                    <option value="4">4 metros</option>
+                                    <option value="5">5 metros</option>
+                                    <option value="6">6 metros</option>
+                                    <option value="7">7 metros</option>
+                                    <option value="8">8 metros</option>
+                                    <option value="9">9 metros</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vehicle-brand">Marca del vehículo*</label>
+                                <input type="text" id="vehicle-brand" name="vehicle-brand" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="vehicle-model">Modelo*</label>
+                                <input type="text" id="vehicle-model" name="vehicle-model" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vehicle-plate">Matrícula*</label>
+                                <input type="text" id="vehicle-plate" name="vehicle-plate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="vehicle-body">Tipo de carrocería*</label>
+                                <select id="vehicle-body" name="vehicle-body" required>
+                                    <option value="">Seleccionar</option>
+                                    <option value="perfilada">Perfilada</option>
+                                    <option value="capuchina">Capuchina</option>
+                                    <option value="integral">Integral</option>
+                                    <option value="furgoneta">Furgoneta camperizada</option>
+                                    <option value="caravana">Caravana</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- SERVICIOS ADICIONALES -->
                         <div class="form-group">
-                            <label for="vehicle-type">Tipo de vehículo*</label>
-                            <select id="vehicle-type" name="vehicle-type" required>
-                                <option value="">Seleccionar</option>
-                                <option value="autocaravana">Autocaravana</option>
-                                <option value="camper">Camper</option>
-                                <option value="caravana">Caravana</option>
-                                <option value="furgoneta">Furgoneta camperizada</option>
-                            </select>
+                            <label>Servicios adicionales:</label>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" name="services" value="electricidad"> Conexión eléctrica
+                                    (+5€/noche)
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="services" value="Vehiculo extra"> Vehículo extra
+                                    (+5€/noche)
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="services" value="Late Check Out"> Late Check Out (+10€
+                                    Salida 20:00hrs.)
+                                </label>
+                            </div>
                         </div>
+
+                        <!-- Mensaje -->
                         <div class="form-group">
-                            <label for="vehicle-length">Longitud (metros)*</label>
-                            <select id="vehicle-length" name="vehicle-length" required>
-                                <option value="">Seleccionar</option>
-                                <option value="4">4 metros</option>
-                                <option value="5">5 metros</option>
-                                <option value="6">6 metros</option>
-                                <option value="7">7 metros</option>
-                                <option value="8">8 metros</option>
-                                <option value="9">9 metros</option>
-                            </select>
+                            <label for="message">Comentarios o peticiones especiales</label>
+                            <textarea id="message" name="message" rows="4"></textarea>
                         </div>
-                    </div>
 
-                    <!-- SERVICIOS ADICIONALES -->
-                    <div class="form-group">
-                        <label>Servicios adicionales:</label>
-                        <div class="checkbox-group">
-                            <label>
-                                <input type="checkbox" name="services" value="electricidad"> Conexión eléctrica
-                                (+5€/noche)
-                            </label>
-                            <label>
-                                <input type="checkbox" name="services" value="Vehiculo extra"> Vehículo extra
-                                (+5€/noche)
-                            </label>
-                            <label>
-                                <input type="checkbox" name="services" value="Late Check Out"> Late Check Out (+10€
-                                Salida 20:00hrs.)
-                            </label>
+                        <div class="form-footer">
+                            <p class="required-fields">* Campos obligatorios</p>
+                            <button type="submit" class="btn btn-primary">Solicitar reserva</button>
                         </div>
-                    </div>
-
-                    <!-- Mensaje -->
-                    <div class="form-group">
-                        <label for="message">Comentarios o peticiones especiales</label>
-                        <textarea id="message" name="message" rows="4"></textarea>
-                    </div>
-
-                    <div class="form-footer">
-                        <p class="required-fields">* Campos obligatorios</p>
-                        <button type="submit" class="btn btn-primary">Solicitar reserva</button>
                     </div>
                 </form>
     </section>
@@ -339,8 +395,8 @@
                 </div>
                 <div class="footer-col">
                     <h3>Legal</h3>
-                    <a href="#aviso-legal" id="legalLink">Aviso Legal</a>
-                    <a href="#politica-privacidad" id="privacyLink">Política de Cockies</a>
+                    <a href="#" id="legalLink">Aviso Legal</a>
+                    <a href="#" id="privacyLink">Política de Privacidad</a>
                 </div>
                 <div class="footer-col">
                     <h3>Contacto</h3>
@@ -363,12 +419,12 @@
     </footer>
 
     <!-- BOTONES FLOTANTES -->
-    <a href="https://wa.me/34666555444" class="float-btn whatsapp-btn">
-        <i class="fab fa-whatsapp"></i>
+    <a href="#inicio" class="float-btn home-btn" aria-label="Ir al inicio">
+        <i class="fas fa-home"></i>
     </a>
 
-    <a href="#inicio" class="float-btn home-btn" id="homeBtn">
-        <i class="fas fa-arrow-up"></i>
+    <a href="https://wa.me/34666555444" class="float-btn whatsapp-btn" target="_blank" aria-label="Contactar por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
     </a>
 
     <!-- MODALES -->
@@ -509,6 +565,42 @@
                 margin: 10% auto;
                 padding: 15px;
             }
+        }
+
+        .login-message {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .login-message i {
+            font-size: 48px;
+            color: #4285F4;
+            margin-bottom: 20px;
+        }
+
+        .login-message p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .form-content.disabled {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .form-content.disabled input,
+        .form-content.disabled select,
+        .form-content.disabled textarea {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .form-content {
+            transition: opacity 0.3s ease;
         }
     </style>
 
@@ -773,95 +865,154 @@
         </div>
     </div>
 
-    <script>
-        // Menú móvil
-        const menuToggle = document.getElementById('menuToggle');
-        const navLinks = document.getElementById('navLinks');
+    <!-- Firebase y autenticación -->
+    <script type="module">
+        import { auth, db } from './firebase-config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            menuToggle.classList.toggle('open');
+        document.addEventListener('DOMContentLoaded', () => {
+            const userNavLink = document.getElementById('userNavLink');
+            const userDropdown = document.getElementById('userDropdown');
+            const dropdownUserName = document.getElementById('dropdownUserName');
+            const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+            const logoutButton = document.getElementById('logoutButton');
+            const loginMessage = document.getElementById('loginMessage');
+            const formContent = document.getElementById('formContent');
+
+            // Toggle dropdown
+            userNavLink.addEventListener('click', (e) => {
+                if (auth.currentUser) {
+                    e.preventDefault();
+                    userDropdown.classList.toggle('show');
+                }
+            });
+
+            // Cerrar dropdown al hacer click fuera
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.user-dropdown')) {
+                    userDropdown.classList.remove('show');
+                }
+            });
+
+            // Manejar cierre de sesión
+            logoutButton.addEventListener('click', async (e) => {
+                e.preventDefault();
+                try {
+                    await signOut(auth);
+                    window.location.reload();
+                } catch (error) {
+                    console.error('Error al cerrar sesión:', error);
+                }
+            });
+
+            // Observer para cambios en la autenticación
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    try {
+                        const userDoc = await getDoc(doc(db, "customers", user.uid));
+                        const userData = userDoc.exists() ? userDoc.data() : {};
+                        const userName = userData.name || 'Usuario';
+                        
+                        // Actualizar dropdown
+                        dropdownUserName.textContent = userName;
+                        dropdownUserEmail.textContent = user.email;
+                        userNavLink.innerHTML = `<i class="fas fa-user"></i> ${userName}`;
+                        
+                        // Mostrar formulario
+                        if (loginMessage) loginMessage.style.display = 'none';
+                        if (formContent) {
+                            formContent.classList.remove('disabled');
+                            formContent.style.opacity = '1';
+                            formContent.style.pointerEvents = 'auto';
+                        }
+                    } catch (error) {
+                        console.error('Error al obtener datos del usuario:', error);
+                    }
+                } else {
+                    // Usuario no autenticado
+                    userNavLink.innerHTML = `<i class="fas fa-user"></i> Acceso Clientes`;
+                    userNavLink.href = 'login.html';
+                    userDropdown.classList.remove('show');
+                    
+                    // Ocultar formulario
+                    if (loginMessage) loginMessage.style.display = 'block';
+                    if (formContent) {
+                        formContent.classList.add('disabled');
+                        formContent.style.opacity = '0.6';
+                        formContent.style.pointerEvents = 'none';
+                    }
+                }
+            });
         });
+    </script>
 
-        // Cookies Banner
-        const cookiesBanner = document.getElementById('cookiesBanner');
-        const acceptCookies = document.getElementById('acceptCookies');
+<!-- EmailJS después -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
-        if (!localStorage.getItem('cookiesAccepted')) {
-            cookiesBanner.style.display = 'block';
-        }
+<!-- Script principal al final -->
+<script type="module" src="js/main.js"></script>
 
-        acceptCookies.addEventListener('click', () => {
-            localStorage.setItem('cookiesAccepted', 'true');
-            cookiesBanner.style.display = 'none';
-        });
-
-        // Botón Home
-        const homeBtn = document.getElementById('homeBtn');
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                homeBtn.style.opacity = '1';
-                homeBtn.style.visibility = 'visible';
-            } else {
-                homeBtn.style.opacity = '0';
-                homeBtn.style.visibility = 'hidden';
-            }
-        });
-
-        // Modales
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Referencias a los elementos
         const legalLink = document.getElementById('legalLink');
         const privacyLink = document.getElementById('privacyLink');
-        const cookiesLink = document.getElementById('cookiesLink');
+        const legalModal = document.getElementById('legalModal');
+        const privacyModal = document.getElementById('privacyModal');
         const closeButtons = document.querySelectorAll('.close-modal');
 
-        legalLink.addEventListener('click', (e) => {
+        // Event listener para el enlace de Aviso Legal
+        legalLink.addEventListener('click', function(e) {
             e.preventDefault();
-            document.getElementById('legalModal').style.display = 'block';
+            legalModal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevenir scroll
         });
 
-        privacyLink.addEventListener('click', (e) => {
+        // Event listener para el enlace de Política de Privacidad
+        privacyLink.addEventListener('click', function(e) {
             e.preventDefault();
-            document.getElementById('privacyModal').style.display = 'block';
+            privacyModal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevenir scroll
         });
 
-        cookiesLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('privacyModal').style.display = 'block';
-        });
-
+        // Event listeners para los botones de cerrar
         closeButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                button.closest('.modal').style.display = 'none';
+            button.addEventListener('click', function() {
+                legalModal.style.display = 'none';
+                privacyModal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Restaurar scroll
             });
         });
 
-        window.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal')) {
-                e.target.style.display = 'none';
+        // Cerrar modales al hacer click fuera
+        window.addEventListener('click', function(e) {
+            if (e.target == legalModal) {
+                legalModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            if (e.target == privacyModal) {
+                privacyModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
             }
         });
 
-        // Formulario de contacto
-        const contactForm = document.getElementById('contactForm');
-
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.');
-            contactForm.reset();
+        // Actualizar fechas automáticamente
+        const updateDates = document.querySelectorAll('#legal-update, #update-date');
+        updateDates.forEach(dateElement => {
+            if (dateElement) {
+                const today = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                dateElement.textContent = today.toLocaleDateString('es-ES', options);
+            }
         });
-    </script>
+    });
+</script>
+
+<!-- Justo antes del cierre del body -->
+<script src="js/navbar.js"></script>
+<script type="module" src="js/main.js"></script>
+
 </body>
-
-<!--SCRIPTS JS FIREBASE Y FIRESTORE-->
-<script type="module" src="firebase-config.js"></script>
-<script type="module" src="firestore-operations.js"></script>
-
-<!-- EMAILJS SDK -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
-<!-- SCRIPT MAIN.JS -->
-<script src="js/main.js"></script>
-
 
 </html>
