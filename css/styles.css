@@ -196,14 +196,8 @@ h3 {
     flex-shrink: 0;
     /* Evita que se encoja demasiado */
 }
+dfsdfghsdfhdsdfgsdgf
 
-.logo {
-    width: 200px; /* Aumentado de 150px */
-    height: auto;
-    max-height: 120px; /* Aumentado de 100px */
-    margin-right: 15px;
-    object-fit: contain;
-}
 
 .nav-links {
     display: flex;
@@ -236,7 +230,9 @@ h3 {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 15px;
+    padding: 8px 15px
+    
+    ;
     border-radius: 50px;
     background: rgba(52, 152, 219, 0.1);
     transition: var(--transition);
@@ -283,12 +279,11 @@ h3 {
 }
 
 /* Mobile Menu Styles */
-@media (max-width: 768px) {
-    .navbar .container {
-        padding: 10px 15px;
-        position: relative;
-    }
+.menu-toggle {
+    display: none;
+}
 
+@media (max-width: 768px) {
     .menu-toggle {
         display: block;
         background: none;
@@ -301,6 +296,11 @@ h3 {
         top: 50%;
         transform: translateY(-50%);
         z-index: 1001;
+    }
+
+    .navbar .container {
+        padding: 10px 15px;
+        position: relative;
     }
 
     .nav-links {
@@ -382,7 +382,7 @@ h3 {
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../img/hero-bg.jpg');
     background-size: cover;
     background-position: center;
-    height: 100vh;
+    height: 80vh;
     min-height: 600px;
     display: flex;
     align-items: center;
@@ -676,48 +676,32 @@ h3 {
 /* ===== BOTONES FLOTANTES ===== */
 .float-btn {
     position: fixed;
-    width: 60px;
-    height: 60px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    color: var(--white);
-    box-shadow: var(--shadow-md);
-    transition: var(--transition);
-    z-index: 900;
-}
-
-.whatsapp-btn {
-    background: #25D366;
-    bottom: 30px;
-    right: 30px;
-
-}
-
-.whatsapp-btn:hover {
-    background: #128C7E;
-    transform: scale(1.1);
-
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    cursor: pointer;
 }
 
 .home-btn {
-    background: var(--accent);
-    bottom: 100px;
-    right: 30px;
-    opacity: 0;
-    visibility: hidden;
+    bottom: 90px; /* Posición encima del botón de WhatsApp */
+    background-color: #3498db; /* Color azul para el botón de Inicio */
 }
 
-.home-btn:hover {
-    background: var(--primary);
-    transform: scale(1.1);
+.whatsapp-btn {
+    bottom: 20px; /* Posición en la parte inferior */
+    background-color: #25d366; /* Color verde para WhatsApp */
 }
 
-.home-btn.visible {
-    opacity: 1;
-    visibility: visible;
+.float-btn:hover {
+    opacity: 0.8;
 }
 
 /* ===== MODALES ===== */
