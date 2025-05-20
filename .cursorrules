@@ -1,0 +1,108 @@
+{
+  "version": "1.0",
+  "rules": {
+    "fileStructure": {
+      "html": {
+        "pattern": "*.html",
+        "rules": [
+          "Mantener estructura semántica HTML5",
+          "Incluir meta tags necesarios",
+          "Seguir el patrón de layout establecido",
+          "Incluir referencias a CSS y JS necesarios"
+        ]
+      },
+      "css": {
+        "pattern": "css/*.css",
+        "rules": [
+          "Organizar estilos por componentes",
+          "Usar variables CSS para colores y medidas",
+          "Implementar diseño responsivo",
+          "Mantener especificidad baja"
+        ]
+      },
+      "javascript": {
+        "pattern": "js/*.js",
+        "rules": [
+          "Modularizar código por funcionalidad",
+          "Usar ES6+ features",
+          "Implementar manejo de errores",
+          "Documentar funciones principales"
+        ]
+      }
+    },
+    "firebase": {
+      "config": {
+        "file": "firebase-config.js",
+        "rules": [
+          "Mantener configuración centralizada",
+          "No exponer credenciales sensibles",
+          "Implementar manejo de errores de conexión"
+        ]
+      },
+      "operations": {
+        "file": "firestore-operations.js",
+        "rules": [
+          "Separar operaciones de base de datos",
+          "Implementar validaciones",
+          "Manejar promesas correctamente"
+        ]
+      }
+    },
+    "authentication": {
+      "rules": [
+        "Implementar validación de formularios",
+        "Manejar estados de autenticación",
+        "Proteger rutas según permisos",
+        "Implementar logout seguro"
+      ]
+    },
+    "ui": {
+      "navbar": {
+        "file": "js/navbar.js",
+        "rules": [
+          "Mantener navegación consistente",
+          "Implementar responsive design",
+          "Manejar estados activos"
+        ]
+      },
+      "styles": {
+        "rules": [
+          "Usar sistema de colores consistente",
+          "Implementar tipografía escalable",
+          "Mantener espaciado consistente",
+          "Optimizar para diferentes dispositivos"
+        ]
+      }
+    },
+    "performance": {
+      "rules": [
+        "Optimizar carga de recursos",
+        "Implementar lazy loading",
+        "Minimizar archivos estáticos",
+        "Optimizar imágenes"
+      ]
+    },
+    "security": {
+      "rules": [
+        "Validar inputs del usuario",
+        "Sanitizar datos",
+        "Implementar CSRF protection",
+        "Manejar sesiones seguras"
+      ]
+    },
+    "maintenance": {
+      "rules": [
+        "Mantener README actualizado",
+        "Documentar cambios importantes",
+        "Seguir convenciones de nombrado",
+        "Mantener dependencias actualizadas"
+      ]
+    }
+  },
+  "ignore": [
+    "node_modules/",
+    ".git/",
+    "*.log",
+    "*.tmp"
+  ]
+} 

@@ -1,16 +1,27 @@
 // Añadir este código para manejar el estado de autenticación
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { db, auth } from './firebase-config.js';
 
-const auth = getAuth();
-const db = getFirestore();
-
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
     const loginMessage = document.getElementById('loginMessage');
     const formContent = document.getElementById('formContent');
     const navUserLink = document.querySelector('.nav-link');
 
     if (user) {
+        // Obtener nombre real de Firestore
+        let nombre = '';
+        try {
+            const userDoc = await getDoc(doc(db, 'customers', user.uid));
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                nombre = userData.name || user.email;
+            } else {
+                nombre = user.email;
+            }
+        } catch (e) {
+            nombre = user.email;
+        }
         // Usuario autenticado
         if (loginMessage) loginMessage.style.display = 'none';
         if (formContent) {
@@ -18,8 +29,8 @@ onAuthStateChanged(auth, (user) => {
             formContent.style.opacity = '1';
         }
         if (navUserLink) {
-            navUserLink.innerHTML = `<i class="fas fa-user"></i> ${user.displayName || 'Usuario'}`;
-            navUserLink.href = '#';
+            navUserLink.innerHTML = `<i class="fas fa-user"></i> ${nombre}`;
+            navUserLink.href = 'profile.html';
         }
     } else {
         // Usuario no autenticado

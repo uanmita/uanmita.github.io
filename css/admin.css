@@ -1,0 +1,412 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  color: var(--dark);
+  background: var(--light);
+}
+
+header {
+  background: var(--primary);
+  color: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+#reservas-section {
+  flex: 2 1 600px;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+}
+
+#precios-section {
+  flex: 1 1 350px;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  min-width: 250px;
+}
+
+h1, h2 {
+  margin-top: 0;
+}
+
+#reservas-table-container {
+  margin-top: 1.5rem;
+  overflow-x: auto;
+}
+
+#precios-lista {
+  margin-top: 1rem;
+}
+
+/* Estilo para la tabla de reservas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+th, td {
+  padding: 12px 10px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+th {
+  background: var(--primary-light);
+  color: var(--dark);
+  font-weight: 600;
+}
+tr:last-child td {
+  border-bottom: none;
+}
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--secondary);
+  color: white;
+}
+.status-confirmada {
+  background: #d4edda;
+  color: #155724;
+}
+.status-pendiente {
+  background: var(--secondary);
+  color: white;
+}
+button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-right: 6px;
+  transition: background 0.2s;
+}
+button:disabled {
+  background: #ccc;
+  color: #888;
+  cursor: not-allowed;
+}
+button:hover:not(:disabled) {
+  background: var(--primary-dark);
+}
+
+/* Modal de detalle */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background: rgba(0,0,0,0.4);
+}
+.modal-content {
+  background: #fff;
+  margin: 5% auto;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+}
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  color: #263159;
+  cursor: pointer;
+}
+#detalle-reserva-content {
+  margin-top: 1.5rem;
+}
+
+td .acciones {
+  display: flex;
+  gap: 0.5rem;
+}
+.cancelar-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.2s;
+}
+.cancelar-btn:disabled {
+  background: #f5b7b1;
+  color: #fff;
+  cursor: not-allowed;
+}
+.cancelar-btn:hover:not(:disabled) {
+  background: #c0392b;
+}
+
+.detalle-btn {
+  background: var(--warning, #ffb347);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.2s;
+}
+.detalle-btn:disabled {
+  background: #ffe0b2;
+  color: #fff;
+  cursor: not-allowed;
+}
+.detalle-btn:hover:not(:disabled) {
+  background: #ff9800;
+}
+
+td.fecha, td.fechallegada, td.fechasalida {
+  font-size: 0.95em;
+  white-space: nowrap;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.precios-categoria {
+  background: var(--primary-light, #e3e8fa);
+  color: var(--primary, #263159);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.precios-valor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+.editar-precio-btn {
+  background: var(--warning, #ffb347);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.editar-precio-btn:hover {
+  background: #ff9800;
+}
+
+@media (max-width: 900px) {
+  main {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  #precios-section, #reservas-section {
+    padding: 1rem;
+  }
+}
+
+.admin-menu {
+  background: var(--primary-light, #e3e8fa);
+  padding: 0.5rem 2rem;
+  box-shadow: 0 2px 6px rgba(38,49,89,0.04);
+}
+.admin-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1.5rem;
+}
+.admin-menu li {
+  display: inline;
+}
+.admin-menu a {
+  color: var(--primary, #263159);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.05em;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+.admin-menu a:hover {
+  background: var(--primary, #263159);
+  color: #fff;
+}
+
+.admin-menu button {
+  background: var(--primary, #263159);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  font-weight: 500;
+  font-size: 1.05em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin-left: 0.5rem;
+}
+.admin-menu button:hover {
+  background: var(--secondary, #4756a3);
+  color: #fff;
+}
+
+/* Modal edición precio */
+#modal-editar-precio .modal-content {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: var(--shadow-md, 0 4px 24px rgba(38,49,89,0.12));
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  position: relative;
+  font-family: inherit;
+}
+#modal-editar-precio h2 {
+  margin-top: 0;
+  font-size: 1.3em;
+  color: var(--primary, #263159);
+}
+#modal-editar-precio label {
+  font-weight: 500;
+  color: var(--primary, #263159);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+#modal-editar-precio input[type="number"] {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 1em;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+#modal-editar-precio input[type="number"]:focus {
+  border: 1.5px solid var(--primary, #263159);
+}
+#modal-editar-precio .btn-guardar {
+  background: var(--primary, #263159);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#modal-editar-precio .btn-guardar:hover {
+  background: var(--primary-dark, #1a2240);
+}
+#modal-editar-precio .btn-cancelar {
+  background: #e5e7eb;
+  color: var(--primary, #263159);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#modal-editar-precio .btn-cancelar:hover {
+  background: #cbd5e1;
+}
+#modal-editar-precio .close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.7rem;
+  color: var(--primary, #263159);
+  cursor: pointer;
+}
+
+/* Modal confirmación acción */
+#modal-confirmar-accion .modal-content {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: var(--shadow-md, 0 4px 24px rgba(38,49,89,0.12));
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  position: relative;
+  font-family: inherit;
+}
+#modal-confirmar-accion h2 {
+  margin-top: 0;
+  font-size: 1.2em;
+  color: var(--primary, #263159);
+}
+#modal-confirmar-accion p {
+  color: var(--primary, #263159);
+  margin-bottom: 0.5rem;
+}
+#modal-confirmar-accion .btn-guardar {
+  background: var(--primary, #263159);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#modal-confirmar-accion .btn-guardar:hover {
+  background: var(--primary-dark, #1a2240);
+}
+#modal-confirmar-accion .btn-cancelar {
+  background: #e5e7eb;
+  color: var(--primary, #263159);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#modal-confirmar-accion .btn-cancelar:hover {
+  background: #cbd5e1;
+}
+#modal-confirmar-accion .close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.7rem;
+  color: var(--primary, #263159);
+  cursor: pointer;
+}
+
+/* Animación email enviado */
+#email-enviado-anim {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#email-enviado-anim .email-anim-icon svg {
+  display: block;
+} 
