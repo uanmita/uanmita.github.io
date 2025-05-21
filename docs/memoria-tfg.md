@@ -86,6 +86,7 @@ El proyecto sigue una metodología ágil, con énfasis en:
 - **Estructura HTML**: Implementación semántica y accesible
 - **Estilos CSS**: Sistema de diseño modular y responsivo
 - **JavaScript**: Arquitectura modular y orientada a objetos
+- **Panel de Administración**: Interfaz avanzada con modales gráficos para confirmación de acciones y edición de precios, animaciones visuales y gestión de estados de reservas en tiempo real.
 
 #### Backend
 - **Firebase**: Configuración y optimización
@@ -103,11 +104,16 @@ El proyecto sigue una metodología ágil, con énfasis en:
 - Diseño responsivo
 - Navegación intuitiva
 - Optimización de rendimiento
+- Modales gráficos para confirmación y edición de datos
+- Animaciones visuales para feedback de acciones
+- Unificación visual de botones y menús
 
 #### Gestión de Datos
 - Operaciones CRUD
 - Validación de datos
 - Manejo de errores
+- Edición directa de precios desde el panel admin
+- Gestión de reservas con doble estado (pendiente/confirmada)
 
 ## Resultados
 
@@ -120,6 +126,8 @@ El proyecto sigue una metodología ágil, con énfasis en:
 - Pruebas de usabilidad
 - Pruebas de rendimiento
 - Pruebas de seguridad
+- Validación de flujos de edición y confirmación de reservas
+- Feedback positivo sobre la experiencia de usuario en el panel admin
 
 ## Conclusiones
 
@@ -127,13 +135,15 @@ El proyecto sigue una metodología ágil, con énfasis en:
 - Implementación exitosa de la arquitectura propuesta
 - Cumplimiento de objetivos de rendimiento
 - Sistema de autenticación seguro
-- Interfaz de usuario intuitiva
+- Interfaz de usuario intuitiva y moderna
+- Panel de administración avanzado con edición en tiempo real y feedback visual
 
 ### Aprendizajes
 - Mejores prácticas en desarrollo web
 - Optimización de rendimiento
 - Gestión de seguridad
 - Trabajo con Firebase
+- Diseño de flujos de usuario avanzados y accesibles
 
 ## Trabajo Futuro
 
