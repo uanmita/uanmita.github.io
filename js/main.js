@@ -100,20 +100,24 @@ document.getElementById('reservationForm').addEventListener('submit', async func
 
     const userId = auth.currentUser.uid;
     
-    // 1. Primero guardar/actualizar información del vehículo
+    // Normalizar matrícula: mayúsculas y sin espacios
+    const matriculaNormalizada = document.getElementById('vehicle-plate').value.toUpperCase().replace(/\s+/g, '');
     const vehiculoData = {
       tipo: document.getElementById('vehicle-type').value,
       longitud: document.getElementById('vehicle-length').value,
       marca: document.getElementById('vehicle-brand').value,
       modelo: document.getElementById('vehicle-model').value,
-      matricula: document.getElementById('vehicle-plate').value,
+      matricula: matriculaNormalizada,
       carroceria: document.getElementById('vehicle-body').value,
       ultimaActualizacion: new Date().toISOString()
     };
 
-    // Crear referencia al vehículo usando la matrícula como ID
-    const vehiculoRef = doc(db, `customers/${userId}/vehicles`, vehiculoData.matricula);
+    // Crear referencia al vehículo usando la matrícula normalizada como ID
+    const vehiculoRef = doc(db, `customers/${userId}/vehicles`, matriculaNormalizada);
     await setDoc(vehiculoRef, vehiculoData);
+    // Guardar también en la colección global 'vehicles'
+    const vehiculoGlobalRef = doc(db, 'vehicles', matriculaNormalizada);
+    await setDoc(vehiculoGlobalRef, { ...vehiculoData, userId });
 
     // 2. Luego crear la reserva vinculada al usuario y vehículo
     const reservaData = {
@@ -127,9 +131,13 @@ document.getElementById('reservationForm').addEventListener('submit', async func
       mascotas: parseInt(document.getElementById('pets').value),
       fechaLlegada: document.getElementById('checkin').value,
       fechaSalida: document.getElementById('checkout').value,
-      vehiculoId: vehiculoData.matricula, // Referencia al vehículo
-      serviciosAdicionales: Array.from(document.querySelectorAll('input[name="services"]:checked'))
-        .map(input => input.value),
+      vehiculoId: matriculaNormalizada, // Referencia normalizada
+      tipo: vehiculoData.tipo,
+      longitud: vehiculoData.longitud,
+      marca: vehiculoData.marca,
+      modelo: vehiculoData.modelo,
+      carroceria: vehiculoData.carroceria,
+      serviciosAdicionales: Array.from(document.querySelectorAll('input[name="services"]:checked')).map(input => input.value),
       comentarios: document.getElementById('message').value,
       fechaReserva: new Date().toISOString(),
       estado: 'pendiente'
@@ -159,7 +167,7 @@ document.getElementById('reservationForm').addEventListener('submit', async func
         email: reservaData.email,
         phone: reservaData.telefono,
         'vehicle-type': reservaData.vehiculoId,
-        'vehicle-length': `${vehiculoData.longitud} metros`,
+        'vehicle-length': `${reservaData.longitud} metros`,
         checkin: formatearFecha(reservaData.fechaLlegada),
         checkout: formatearFecha(reservaData.fechaSalida),
         adults: reservaData.adultos,

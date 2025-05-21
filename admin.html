@@ -7,6 +7,10 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/admin.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/colreorder/1.6.2/css/colReorder.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/colresize/1.0.0/css/colResize.dataTables.min.css">
 </head>
 <body>
   <header class="profile-header">
@@ -20,9 +24,10 @@
   </header>
   <nav class="admin-menu">
     <ul>
-      <li><a href="/index.html">Inicio</a></li>
-      <li><a href="https://console.firebase.google.com/u/0/project/tfg-ac-el-rinconcito/firestore/data" target="_blank">Firebase</a></li>
-      <li><button id="logout-btn" type="button">Cerrar sesión</button></li>
+      <li><a href="/index.html"><i class="fa fa-home"></i> Inicio</a></li>
+      <li><a href="https://console.firebase.google.com/u/0/project/tfg-ac-el-rinconcito/firestore/data" target="_blank"><i class="fa fa-database"></i> Firebase</a></li>
+      <li><a href="#" id="menu-informes"><i class="fa fa-chart-bar"></i> Informes</a></li>
+      <li><button id="logout-btn" type="button"><i class="fa fa-sign-out-alt"></i> Cerrar sesión</button></li>
     </ul>
   </nav>
   <main>
@@ -49,6 +54,86 @@
         <!-- Aquí se mostrarán los precios base -->
       </div>
     </aside>
+    <!-- Nueva pestaña de Informes -->
+    <section id="informes-section" style="display:none;">
+      <h2>Informes de Reservas</h2>
+      <div style="margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;">
+        <button id="volver-reservas" class="btn-guardar"><i class="fa fa-arrow-left"></i> Volver a Reservas</button>
+      </div>
+      <div id="filtros-informes" style="margin-bottom:1.5rem;display:flex;flex-wrap:wrap;gap:1rem;flex-direction:column;">
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;">
+          <div class="filtro-grupo">
+            <label for="filtro-id-reserva">ID Reserva:</label>
+            <select id="filtro-id-reserva" class="filtro-select"></select>
+          </div>
+          <div class="filtro-grupo">
+            <label for="filtro-nombre">Nombre/Email:</label>
+            <input type="text" id="filtro-nombre" class="filtro-input" placeholder="Buscar por nombre o email">
+          </div>
+          <div class="filtro-grupo">
+            <label for="filtro-matricula">Matrícula:</label>
+            <select id="filtro-matricula" class="filtro-select"></select>
+          </div>
+          <div class="filtro-grupo">
+            <label for="filtro-estado">Estado:</label>
+            <select id="filtro-estado" class="filtro-select"></select>
+          </div>
+          <div class="filtro-grupo">
+            <label for="filtro-tipo-vehiculo">Tipo Vehículo:</label>
+            <select id="filtro-tipo-vehiculo" class="filtro-select"></select>
+          </div>
+          <div class="filtro-grupo">
+            <label for="filtro-fecha-desde">Fecha Desde:</label>
+            <input type="date" id="filtro-fecha-desde" class="filtro-input">
+          </div>
+          <div class="filtro-grupo">
+            <label for="filtro-fecha-hasta">Fecha Hasta:</label>
+            <input type="date" id="filtro-fecha-hasta" class="filtro-input">
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;">
+          <div class="filtro-grupo">
+            <label for="filtro-precio-min">Precio Mín:</label>
+            <input type="number" id="filtro-precio-min" class="filtro-input" min="0" step="0.01">
+          </div>
+          <div class="filtro-grupo">
+            <label for="filtro-precio-max">Precio Máx:</label>
+            <input type="number" id="filtro-precio-max" class="filtro-input" min="0" step="0.01">
+          </div>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table id="tabla-informes" class="display" style="width:100%;">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Estado</th>
+              <th>Fecha Reserva</th>
+              <th>Fecha Llegada</th>
+              <th>Fecha Salida</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Adultos</th>
+              <th>Niños</th>
+              <th>Mascotas</th>
+              <th>Precio Total</th>
+              <th>Tipo Vehículo</th>
+              <th>Matrícula</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Carrocería</th>
+              <th>Longitud</th>
+              <th>Servicios</th>
+              <th>Comentarios</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Se llenará dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
   <!-- Modal de Detalle de Reserva -->
   <div id="detalle-modal" class="modal" style="display:none;">
@@ -101,5 +186,16 @@
   <!-- <script src="js/firebase-config.js"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script src="js/admin.js" type="module"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/colreorder/1.6.2/js/dataTables.colReorder.min.js"></script>
+  <script src="https://cdn.datatables.net/colresize/1.0.0/js/dataTables.colResize.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/colresizable/colResizable-1.6.min.js"></script>
 </body>
 </html> 

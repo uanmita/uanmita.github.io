@@ -88,13 +88,15 @@ async function cargarReservas() {
       return;
     }
     let tabla = `<table><thead><tr>
-      <th>Email</th><th>Fecha Reserva</th><th>Fecha Llegada</th><th>Fecha Salida</th><th>Adultos</th><th>Mascotas</th><th>Estado</th><th>Acciones</th>
+      <th>ID</th><th>Email</th><th>Fecha Reserva</th><th>Fecha Llegada</th><th>Fecha Salida</th><th>Adultos</th><th>Mascotas</th><th>Estado</th><th>Acciones</th>
     </tr></thead><tbody>`;
     snapshot.forEach(docSnap => {
       const r = docSnap.data();
       const esConfirmada = r.estado === 'confirmada';
       const esPendiente = r.estado === 'pendiente';
+      const esCancelada = r.estado === 'cancelado';
       tabla += `<tr>
+        <td>${docSnap.id}</td>
         <td>${r.email || ''}</td>
         <td class="fecha">${r.fechaReserva ? new Date(r.fechaReserva).toLocaleString() : ''}</td>
         <td class="fechallegada">${r.fechaLlegada || ''}</td>
@@ -104,8 +106,8 @@ async function cargarReservas() {
         <td>${r.estado || ''}</td>
         <td><div class="acciones">
           <button class="detalle-btn" data-id="${docSnap.id}">Ver Detalle</button>
-          <button class="confirmar-btn" data-id="${docSnap.id}" data-estado="${r.estado}" ${r.estado === 'cancelado' ? 'disabled' : ''}>${esConfirmada ? 'Marcar como pendiente' : 'Confirmar'}</button>
-          <button class="cancelar-btn" data-id="${docSnap.id}" ${r.estado === 'cancelado' ? 'disabled' : ''}>Cancelar</button>
+          <button class="confirmar-btn" data-id="${docSnap.id}" data-estado="${r.estado}" ${esCancelada ? 'disabled' : ''}>${esConfirmada ? 'Marcar como pendiente' : 'Confirmar'}</button>
+          <button class="cancelar-btn" data-id="${docSnap.id}" data-estado="${r.estado}">${esCancelada ? 'Marcar como pendiente' : 'Cancelar'}</button>
         </div></td>
       </tr>`;
     });
@@ -138,9 +140,15 @@ async function cargarReservas() {
     document.querySelectorAll('.cancelar-btn').forEach(btn => {
       btn.addEventListener('click', async (e) => {
         const id = btn.getAttribute('data-id');
-        const confirmar = confirm('¿Estás seguro de que deseas cancelar esta reserva? Esta acción no se puede deshacer.');
-        if (confirmar) {
+        const estadoActual = btn.getAttribute('data-estado');
+        if (estadoActual === 'cancelado') {
+          mostrarModalConfirmar('¿Quieres marcar esta reserva como pendiente?', async () => {
+            await marcarReservaPendiente(id);
+          });
+        } else {
+          mostrarModalConfirmar('¿Estás seguro de que deseas cancelar esta reserva?', async () => {
           await cancelarReserva(id);
+          });
         }
       });
     });
@@ -240,10 +248,19 @@ async function confirmarReserva(reservaId) {
 async function cancelarReserva(reservaId) {
   try {
     await updateDoc(doc(db, 'reservas', reservaId), { estado: 'cancelado' });
-    alert('Reserva cancelada.');
     cargarReservas();
   } catch (err) {
     alert('Error al cancelar la reserva: ' + err.message);
+  }
+}
+
+// Nueva función para marcar como pendiente
+async function marcarReservaPendiente(reservaId) {
+  try {
+    await updateDoc(doc(db, 'reservas', reservaId), { estado: 'pendiente' });
+    cargarReservas();
+  } catch (err) {
+    alert('Error al marcar como pendiente: ' + err.message);
   }
 }
 
@@ -263,8 +280,8 @@ async function mostrarDetalleReserva(reservaId) {
     // Obtener precios base
     const preciosVehiculosSnap = await getDoc(doc(db, 'prices', 'vehicles_base'));
     const preciosVehiculos = preciosVehiculosSnap.exists() ? preciosVehiculosSnap.data() : {};
-    const configSnap = await getDoc(doc(db, 'prices', 'config'));
-    const config = configSnap.exists() ? configSnap.data() : {};
+    const huespedesSnap = await getDoc(doc(db, 'prices', 'huespedes'));
+    const huespedes = huespedesSnap.exists() ? huespedesSnap.data() : {};
     const extrasSnap = await getDoc(doc(db, 'prices', 'extra_services'));
     const extras = extrasSnap.exists() ? extrasSnap.data() : {};
     // Cálculo de noches
@@ -307,8 +324,9 @@ async function mostrarDetalleReserva(reservaId) {
     }
     // Precios
     const precioVehiculo = tipoVehiculo ? preciosVehiculos[tipoVehiculo] || 0 : 0;
-    const precioAdulto = config.precio_adulto || 0;
-    const precioNino = config.precio_nino || 0;
+    const precioAdulto = huespedes.adultos || 0;
+    const precioNino = huespedes.niños || 0;
+    const precioMascota = huespedes.mascota || 0;
     // Servicios extra
     let totalExtras = 0;
     let detalleExtras = '';
@@ -324,24 +342,33 @@ async function mostrarDetalleReserva(reservaId) {
       });
     }
     // Total
-    const subtotalNoche = precioVehiculo + (precioAdulto * adultos) + (precioNino * ninos);
+    const subtotalNoche = precioVehiculo + (precioAdulto * adultos) + (precioNino * ninos) + (precioMascota * (reserva.mascotas || 0));
     const total = (subtotalNoche * noches) + totalExtras;
     // Render
     modalContent.innerHTML = `
       <p><strong>Nombre:</strong> ${reserva.nombre || ''}</p>
       <p><strong>Email:</strong> ${reserva.email || ''}</p>
+      <p><strong>Teléfono:</strong> ${reserva.telefono || ''}</p>
       <p><strong>Fechas:</strong> ${reserva.fechaLlegada} a ${reserva.fechaSalida} (${noches} noches)</p>
       <p><strong>Adultos:</strong> ${adultos} &nbsp; <strong>Niños:</strong> ${ninos} &nbsp; <strong>Mascotas:</strong> ${reserva.mascotas || 0}</p>
       <p><strong>Tipo de vehículo:</strong> ${tipoVehiculo ? tipoVehiculo.replace(/\.$/, '') : '<span style=\'color:red;\'>No encontrado</span>'}</p>
+      <p><strong>Matrícula:</strong> ${reserva.vehiculoId || reserva.matricula || ''}</p>
+      <p><strong>Marca:</strong> ${reserva.marca || ''}</p>
+      <p><strong>Modelo:</strong> ${reserva.modelo || ''}</p>
+      <p><strong>Longitud:</strong> ${reserva.longitud || ''} m</p>
+      <p><strong>Carrocería:</strong> ${reserva.carroceria || ''}</p>
       ${advertenciaTipo}
+      <hr>
       <p><strong>Precio vehículo:</strong> ${precioVehiculo} €/noche</p>
       <p><strong>Precio adulto:</strong> ${precioAdulto} €/noche</p>
       <p><strong>Precio niño:</strong> ${precioNino} €/noche</p>
+      <p><strong>Precio mascota:</strong> ${precioMascota} €/noche</p>
       <p><strong>Subtotal por noche:</strong> ${subtotalNoche.toFixed(2)} €</p>
       <p><strong>Servicios adicionales:</strong></p>
       <ul>${detalleExtras || '<li>Ninguno</li>'}</ul>
       <hr>
       <h3>Total: ${total.toFixed(2)} €</h3>
+      <p style='font-size:0.9em;color:#888;'><strong>ID de reserva:</strong> ${reserva.reservaId || reservaId}</p>
       <details style='margin-top:1.5rem; background:#f5f5f5; padding:1rem; border-radius:6px;'>
         <summary style='cursor:pointer; font-weight:bold;'>Depuración de cálculo</summary>
         <pre style='font-size:0.9em; white-space:pre-wrap;'>
@@ -350,9 +377,9 @@ Claves vehicles_base: ${Object.keys(preciosVehiculos).join(', ')}
 precioVehiculo: ${precioVehiculo}
 precioAdulto: ${precioAdulto}
 precioNino: ${precioNino}
+precioMascota: ${precioMascota}
 adultos: ${adultos}
 ninos: ${ninos}
-config: ${JSON.stringify(config, null, 2)}
 reserva: ${JSON.stringify(reserva, null, 2)}
         </pre>
       </details>
@@ -443,33 +470,289 @@ function mostrarAnimacionEmailEnviado() {
   }, 1800);
 }
 
-// Nueva función para marcar como pendiente
-async function marcarReservaPendiente(reservaId) {
+// --- INFORMES DE RESERVAS ---
+
+// Mostrar sección de informes al hacer clic en el menú (puedes adaptar esto a tu menú real)
+window.mostrarInformes = function() {
+  document.getElementById('reservas-section').style.display = 'none';
+  document.getElementById('precios-section').style.display = 'none';
+  document.getElementById('informes-section').style.display = '';
+  // Resaltar botón Informes
+  const menuInformes = document.getElementById('menu-informes');
+  if (menuInformes) menuInformes.classList.add('activo-informes');
+};
+// Puedes añadir un botón en el menú que llame a mostrarInformes()
+
+// Inicializar DataTable y cargar datos
+let dataTableInformes;
+async function cargarInformesReservas() {
   try {
-    await updateDoc(doc(db, 'reservas', reservaId), { estado: 'pendiente' });
-    cargarReservas();
-  } catch (err) {
-    alert('Error al marcar como pendiente: ' + err.message);
+    console.log('Iniciando carga de informes...');
+    const tabla = $('#tabla-informes');
+    if (!tabla.length) {
+      console.error('No se encontró la tabla de informes');
+      return;
+    }
+
+    // Destruir DataTable existente si existe
+    if (dataTableInformes) {
+      dataTableInformes.destroy();
+    }
+
+    const tbody = tabla.find('tbody');
+    tbody.html('<tr><td colspan="20">Cargando reservas...</td></tr>');
+
+    // Obtener datos de Firestore
+    console.log('Obteniendo datos de Firestore...');
+    const snapshot = await getDocs(collection(db, 'reservas'));
+    if (snapshot.empty) {
+      tbody.html('<tr><td colspan="20">No hay reservas registradas.</td></tr>');
+      return;
+    }
+
+    const reservas = [];
+    // Para filtros únicos
+    const ids = new Set();
+    const matriculas = new Set();
+    const estados = new Set();
+    const tipos = new Set();
+
+    // Obtener precios base para el cálculo
+    const preciosVehiculosSnap = await getDoc(doc(db, 'prices', 'vehicles_base'));
+    const preciosVehiculos = preciosVehiculosSnap.exists() ? preciosVehiculosSnap.data() : {};
+    const huespedesSnap = await getDoc(doc(db, 'prices', 'huespedes'));
+    const huespedes = huespedesSnap.exists() ? huespedesSnap.data() : {};
+    const extrasSnap = await getDoc(doc(db, 'prices', 'extra_services'));
+    const extras = extrasSnap.exists() ? extrasSnap.data() : {};
+
+    console.log('Procesando reservas...');
+    snapshot.forEach(docSnap => {
+      const r = docSnap.data();
+      // Cálculo de noches
+      const fechaIn = new Date(r.fechaLlegada);
+      const fechaOut = new Date(r.fechaSalida);
+      const noches = Math.max(1, Math.ceil((fechaOut - fechaIn) / (1000*60*60*24)));
+      // Adultos, niños, mascotas
+      const adultos = Number(r.adultos) || 0;
+      let ninos = 0;
+      if (typeof r.ninos !== 'undefined') ninos = Number(r.ninos) || 0;
+      else if (typeof r.children !== 'undefined') ninos = Number(r.children) || 0;
+      const mascotas = Number(r.mascotas) || 0;
+      // Tipo vehículo
+      let tipoVehiculo = r.tipo || '';
+      if (!tipoVehiculo && r.vehiculoId && preciosVehiculos[r.vehiculoId]) tipoVehiculo = r.vehiculoId;
+      // Precios
+      const precioVehiculo = tipoVehiculo ? preciosVehiculos[tipoVehiculo] || 0 : 0;
+      const precioAdulto = huespedes.adultos || 0;
+      const precioNino = huespedes.niños || 0;
+      const precioMascota = huespedes.mascota || 0;
+      // Servicios extra
+      let totalExtras = 0;
+      if (Array.isArray(r.serviciosAdicionales)) {
+        r.serviciosAdicionales.forEach(serv => {
+          if (serv.toLowerCase().includes('electricidad')) {
+            totalExtras += 5 * noches;
+          } else if (extras[serv]) {
+            totalExtras += extras[serv];
+          }
+        });
+      }
+      // Precio total
+      const subtotalNoche = precioVehiculo + (precioAdulto * adultos) + (precioNino * ninos) + (precioMascota * mascotas);
+      const precioTotal = (subtotalNoche * noches) + totalExtras;
+      reservas.push({
+        id: docSnap.id,
+        estado: r.estado || '',
+        fechaReserva: r.fechaReserva ? new Date(r.fechaReserva).toLocaleString() : '',
+        comentarios: r.comentarios || '',
+        fechaLlegada: r.fechaLlegada || '',
+        fechaSalida: r.fechaSalida || '',
+        nombre: r.nombre || '',
+        email: r.email || '',
+        telefono: r.telefono || '',
+        adultos: r.adultos || 0,
+        ninos: r.ninos || 0,
+        mascotas: r.mascotas || 0,
+        tipo: r.tipo || '',
+        matricula: r.vehiculoId || '',
+        marca: r.marca || '',
+        modelo: r.modelo || '',
+        carroceria: r.carroceria || '',
+        longitud: r.longitud || '',
+        servicios: Array.isArray(r.serviciosAdicionales) ? r.serviciosAdicionales.join(', ') : '',
+        precio: precioTotal.toFixed(2)
+      });
+      ids.add(docSnap.id);
+      if (r.vehiculoId) matriculas.add(r.vehiculoId);
+      if (r.estado) estados.add(r.estado);
+      if (r.tipo) tipos.add(r.tipo);
+    });
+
+    // Poblar filtros desplegables
+    console.log('Poblando filtros...');
+    const idSelect = document.getElementById('filtro-id-reserva');
+    if (idSelect) {
+      idSelect.innerHTML = '<option value="">Todas las reservas</option>' + 
+        Array.from(ids).map(id => `<option value="${id}">${id}</option>`).join('');
+    }
+
+    const matriculaSelect = document.getElementById('filtro-matricula');
+    if (matriculaSelect) {
+      matriculaSelect.innerHTML = '<option value="">Todas las matrículas</option>' + 
+        Array.from(matriculas).map(m => `<option value="${m}">${m}</option>`).join('');
+    }
+
+    const estadoSelect = document.getElementById('filtro-estado');
+    if (estadoSelect) {
+      estadoSelect.innerHTML = '<option value="">Todos los estados</option>' + 
+        Array.from(estados).map(e => `<option value="${e}">${e.charAt(0).toUpperCase() + e.slice(1)}</option>`).join('');
+    }
+
+    const tipoSelect = document.getElementById('filtro-tipo-vehiculo');
+    if (tipoSelect) {
+      tipoSelect.innerHTML = '<option value="">Todos los tipos</option>' + 
+        Array.from(tipos).map(t => `<option value="${t}">${t.charAt(0).toUpperCase() + t.slice(1)}</option>`).join('');
+    }
+
+    // Limpiar y poblar la tabla
+    console.log('Poblando tabla...');
+    tbody.html('');
+    reservas.forEach(r => {
+      tbody.append(`<tr>
+        <td>${r.id}</td>
+        <td>${r.estado}</td>
+        <td>${r.fechaReserva}</td>
+        <td>${r.fechaLlegada}</td>
+        <td>${r.fechaSalida}</td>
+        <td>${r.nombre}</td>
+        <td>${r.email}</td>
+        <td>${r.telefono}</td>
+        <td>${r.adultos}</td>
+        <td>${r.ninos}</td>
+        <td>${r.mascotas}</td>
+        <td>${r.precio}</td>
+        <td>${r.tipo}</td>
+        <td>${r.matricula}</td>
+        <td>${r.marca}</td>
+        <td>${r.modelo}</td>
+        <td>${r.carroceria}</td>
+        <td>${r.longitud}</td>
+        <td>${r.servicios}</td>
+        <td>${r.comentarios}</td>
+      </tr>`);
+    });
+    // Añadir title automático a cada celda para tooltip
+    $('#tabla-informes tbody tr').each(function() {
+      $(this).find('td').each(function() {
+        if (!$(this).attr('title')) {
+          $(this).attr('title', $(this).text());
+        }
+      });
+    });
+
+    // Inicializar DataTable
+    console.log('Inicializando DataTable...');
+    dataTableInformes = tabla.DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'csvHtml5',
+          text: '<i class="fa fa-file-csv"></i> Exportar CSV',
+          className: 'btn-guardar',
+          exportOptions: { columns: ':visible' }
+        },
+        {
+          extend: 'excelHtml5',
+          text: '<i class="fa fa-file-excel"></i> Exportar Excel',
+          className: 'btn-guardar',
+          exportOptions: { columns: ':visible' }
+        },
+        {
+          extend: 'print',
+          text: '<i class="fa fa-file-pdf"></i> Imprimir / PDF',
+          className: 'btn-guardar',
+          exportOptions: { columns: ':visible' }
+        }
+      ],
+      order: [[4, 'desc']],
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+        search: 'Buscar:',
+        lengthMenu: 'Mostrar _MENU_ registros',
+        info: 'Mostrando _START_ a _END_ de _TOTAL_ reservas',
+        paginate: { previous: 'Anterior', next: 'Siguiente' }
+      },
+      responsive: false,
+      colReorder: true,
+      autoWidth: false
+    });
+
+    console.log('Carga de informes completada');
+  } catch (error) {
+    console.error('Error al cargar informes:', error);
+    const tbody = $('#tabla-informes tbody');
+    if (tbody.length) {
+      tbody.html(`<tr><td colspan="20" style="color:red;">Error al cargar los datos: ${error.message}</td></tr>`);
+    }
   }
 }
 
-// Inicialización
+// Filtros avanzados (actualizado para usar los nuevos select)
+$('#filtro-id-reserva, #filtro-nombre, #filtro-matricula, #filtro-estado, #filtro-tipo-vehiculo, #filtro-fecha-desde, #filtro-fecha-hasta, #filtro-precio-min, #filtro-precio-max').on('input change', function() {
+  if (!dataTableInformes) return;
+  let idReserva = $('#filtro-id-reserva').val();
+  let nombre = $('#filtro-nombre').val().toLowerCase();
+  let matricula = $('#filtro-matricula').val();
+  let estado = $('#filtro-estado').val();
+  let tipo = $('#filtro-tipo-vehiculo').val();
+  let fechaDesde = $('#filtro-fecha-desde').val();
+  let fechaHasta = $('#filtro-fecha-hasta').val();
+  let precioMin = parseFloat($('#filtro-precio-min').val()) || 0;
+  let precioMax = parseFloat($('#filtro-precio-max').val()) || Infinity;
+  dataTableInformes.rows().every(function() {
+    const data = this.data();
+    let mostrar = true;
+    if (idReserva && data[0] !== idReserva) mostrar = false;
+    if (nombre && !(data[1].toLowerCase().includes(nombre) || data[2].toLowerCase().includes(nombre))) mostrar = false;
+    if (matricula && data[12] !== matricula) mostrar = false;
+    if (estado && data[7] !== estado) mostrar = false;
+    if (tipo && data[11] !== tipo) mostrar = false;
+    if (fechaDesde && data[5] < fechaDesde) mostrar = false;
+    if (fechaHasta && data[5] > fechaHasta) mostrar = false;
+    let precio = parseFloat(data[19]) || 0;
+    if (precio < precioMin || precio > precioMax) mostrar = false;
+    $(this.node()).toggle(mostrar);
+  });
+});
+
+// Botones personalizados (opcional, ya que DataTables los incluye)
+$('#exportar-csv').on('click', function() { if (dataTableInformes) dataTableInformes.button('.buttons-csv').trigger(); });
+$('#exportar-excel').on('click', function() { if (dataTableInformes) dataTableInformes.button('.buttons-excel').trigger(); });
+$('#imprimir-informe').on('click', function() { if (dataTableInformes) dataTableInformes.button('.buttons-print').trigger(); });
+
+// Mostrar informes al cargar (puedes cambiar esto por un botón/menu)
 window.addEventListener('DOMContentLoaded', () => {
-  cargarReservas();
-  cargarPreciosBase();
-  // Botón cerrar sesión
-  const logoutBtn = document.getElementById('logout-btn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', async () => {
-      await signOut(auth);
-      window.location.reload();
+  // ... existing code ...
+  // Puedes mostrar la sección de informes automáticamente para pruebas:
+  // mostrarInformes();
+  // cargarInformesReservas();
+  const menuInformes = document.getElementById('menu-informes');
+  if (menuInformes) {
+    menuInformes.addEventListener('click', function(e) {
+      e.preventDefault();
+      mostrarInformes();
+      cargarInformesReservas();
     });
   }
-  // Botón editar precios (placeholder)
-  const editarPreciosBtn = document.getElementById('editar-precios-btn');
-  if (editarPreciosBtn) {
-    editarPreciosBtn.addEventListener('click', () => {
-      alert('Funcionalidad de edición de precios próximamente.');
+  const volverReservasBtn = document.getElementById('volver-reservas');
+  if (volverReservasBtn) {
+    volverReservasBtn.addEventListener('click', function() {
+      document.getElementById('informes-section').style.display = 'none';
+      document.getElementById('reservas-section').style.display = '';
+      document.getElementById('precios-section').style.display = '';
+      // Quitar resaltado del botón Informes
+      const menuInformes = document.getElementById('menu-informes');
+      if (menuInformes) menuInformes.classList.remove('activo-informes');
     });
   }
 }); 
