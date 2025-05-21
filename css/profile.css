@@ -1,0 +1,150 @@
+.profile-header {
+    background: linear-gradient(135deg, #1a237e, #0d47a1);
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.profile-header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilos modernos para el logo y título */
+.brand-modern {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    text-decoration: none;
+    background: white;
+    padding: 1.2rem 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.brand-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.brand-logo-wrap {
+    background: linear-gradient(135deg, #1a237e, #0d47a1);
+    padding: 0.8rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.brand-logo-modern {
+    width: 85px;
+    height: 85px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.brand-title-modern {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.brand-title-modern span {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a237e;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.brand-title-modern small {
+    font-size: 1rem;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .brand-modern {
+        padding: 1rem 1.5rem;
+        gap: 1.5rem;
+    }
+
+    .brand-logo-modern {
+        width: 65px;
+        height: 65px;
+    }
+
+    .brand-title-modern span {
+        font-size: 1.4rem;
+    }
+
+    .brand-title-modern small {
+        font-size: 0.9rem;
+    }
+}
+
+.profile-user-box {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    background: #fff;
+    padding: 0.7rem 1.3rem;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    min-width: 220px;
+}
+
+.profile-user-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #e3e8fa;
+    background: #f4f6fa;
+}
+
+.profile-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.profile-user-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a237e;
+    line-height: 1.1;
+}
+
+.profile-user-email {
+    font-size: 0.97rem;
+    color: #666;
+    line-height: 1.1;
+    word-break: break-all;
+}
+
+@media (max-width: 768px) {
+    .profile-header-content {
+        flex-direction: column;
+        gap: 1.2rem !important;
+    }
+    .profile-user-box {
+        min-width: 0;
+        width: 100%;
+        justify-content: center;
+        padding: 0.7rem 0.5rem;
+    }
+    .profile-user-photo {
+        width: 48px;
+        height: 48px;
+    }
+    .profile-user-name {
+        font-size: 1rem;
+    }
+    .profile-user-email {
+        font-size: 0.9rem;
+    }
+} 

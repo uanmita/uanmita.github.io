@@ -196,8 +196,63 @@ h3 {
     flex-shrink: 0;
     /* Evita que se encoja demasiado */
 }
-dfsdfghsdfhdsdfgsdgf
 
+.brand-modern {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(38,49,89,0.07);
+    padding: 1.2rem 2.5rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.brand-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(38,49,89,0.13);
+}
+
+.brand-logo-wrap {
+    background: linear-gradient(135deg, #e3e8fa 60%, #fff 100%);
+    border-radius: 14px;
+    padding: 0.6rem;
+    box-shadow: 0 2px 12px rgba(52,152,219,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-logo-modern {
+    width: 85px;
+    height: 85px;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(52,152,219,0.10);
+    background: #fff;
+}
+
+.brand-title-modern {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-title-modern span {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(52,152,219,0.08);
+    line-height: 1.2;
+}
+
+.brand-title-modern small {
+    font-size: 1rem;
+    color: var(--gray);
+    font-weight: 500;
+    margin-top: 3px;
+}
 
 .nav-links {
     display: flex;
@@ -252,6 +307,7 @@ dfsdfghsdfhdsdfgsdgf
 .navbar-title {
     display: flex;
     align-items: center;
+    padding: 0.5rem 0;
 }
 
 .navbar-title h1 {
@@ -262,9 +318,7 @@ dfsdfghsdfhdsdfgsdgf
 
 @media (max-width: 768px) {
     .navbar-title {
-        flex-direction: column;
-        text-align: center;
-        margin-bottom: 10px;
+        padding: 0.3rem 0;
     }
 
     .navbar-title h1 {
@@ -275,6 +329,24 @@ dfsdfghsdfhdsdfgsdgf
     .logo img {
         height: 50px;
         width: auto;
+    }
+
+    .brand-modern {
+        padding: 1rem 1.8rem;
+        gap: 1.5rem;
+    }
+
+    .brand-logo-modern {
+        width: 65px;
+        height: 65px;
+    }
+
+    .brand-title-modern span {
+        font-size: 1.4rem;
+    }
+
+    .brand-title-modern small {
+        font-size: 0.85rem;
     }
 }
 

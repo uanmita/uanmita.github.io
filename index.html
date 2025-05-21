@@ -24,10 +24,15 @@
     <nav class="navbar">
         <div class="container">
             <div class="navbar-title">
-                <a href="index.html" class="logo">
-                    <img src="img/logo.png" alt="AC El Rinconcito">
+                <a href="index.html" class="brand-modern">
+                    <div class="brand-logo-wrap">
+                        <img src="img/logo.png" alt="AC El Rinconcito" class="brand-logo-modern">
+                    </div>
+                    <div class="brand-title-modern">
+                        <span>AC El Rinconcito</span>
+                        <small>Área Premium</small>
+                    </div>
                 </a>
-                <h1>AC El Rinconcito</h1>
             </div>
             <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
                 <i class="fas fa-bars"></i>
@@ -69,6 +74,9 @@
                         src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
                         </script>
                 </button>
+
+                <!-- Botón especial para admin, oculto por defecto -->
+                <a href="admin.html" id="adminPanelBtn" style="display:none;"><i class="fas fa-tools"></i> Panel Admin</a>
             </div>
         </div>
     </nav>
@@ -428,6 +436,11 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
+    <!-- Botón flotante Panel Admin arriba a la derecha -->
+    <a href="admin.html" class="float-btn admin-btn" title="Panel Admin">
+        <i class="fas fa-cog"></i>
+    </a>
+
     <!-- MODALES -->
     <div class="modal" id="legalModal">
         <div class="modal-content">
@@ -602,6 +615,39 @@
 
         .form-content {
             transition: opacity 0.3s ease;
+        }
+
+        .float-btn.admin-btn {
+            top: 20px;
+            right: 20px;
+            left: auto;
+            bottom: auto;
+            background: var(--primary);
+            color: #fff;
+            z-index: 1200;
+            box-shadow: 0 4px 16px rgba(38,49,89,0.10);
+            font-size: 1.05em;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            position: fixed;
+            transition: background 0.2s, color 0.2s;
+        }
+        .float-btn.admin-btn:hover {
+            background: #ff9800;
+            color: #fff;
+        }
+        @media (max-width: 600px) {
+            .float-btn.admin-btn {
+                top: 12px;
+                right: 12px;
+                width: 32px;
+                height: 32px;
+                font-size: 0.95em;
+            }
         }
     </style>
 
@@ -880,6 +926,11 @@
             const logoutButton = document.getElementById('logoutButton');
             const loginMessage = document.getElementById('loginMessage');
             const formContent = document.getElementById('formContent');
+            const adminPanelBtn = document.getElementById('adminPanelBtn');
+            const ADMIN_EMAILS = [
+                "uanmita@gmail.com"
+                // Puedes añadir más emails de administradores aquí
+            ];
 
             // Toggle dropdown
             userNavLink.addEventListener('click', (e) => {
@@ -909,6 +960,8 @@
 
             // Observer para cambios en la autenticación
             onAuthStateChanged(auth, async (user) => {
+                console.log('Usuario logado:', user ? user.email : null);
+                console.log('¿Es admin?', user && ADMIN_EMAILS.map(e => e.toLowerCase()).includes(user.email ? user.email.toLowerCase() : ''));
                 if (user) {
                     try {
                         const userDoc = await getDoc(doc(db, "customers", user.uid));
@@ -916,7 +969,7 @@
                         const userName = userData.name || 'Usuario';
                         
                         // Actualizar dropdown
-                        dropdownUserName.textContent = userName;
+                        if (dropdownUserName) dropdownUserName.textContent = userName;
                         dropdownUserEmail.textContent = user.email;
                         userNavLink.innerHTML = `<i class="fas fa-user"></i> ${userName}`;
                         
@@ -926,6 +979,12 @@
                             formContent.classList.remove('disabled');
                             formContent.style.opacity = '1';
                             formContent.style.pointerEvents = 'auto';
+                        }
+
+                        if (ADMIN_EMAILS.map(e => e.toLowerCase()).includes(user.email ? user.email.toLowerCase() : '')) {
+                            if (adminPanelBtn) adminPanelBtn.style.display = '';
+                        } else {
+                            if (adminPanelBtn) adminPanelBtn.style.display = 'none';
                         }
                     } catch (error) {
                         console.error('Error al obtener datos del usuario:', error);
@@ -943,6 +1002,8 @@
                         formContent.style.opacity = '0.6';
                         formContent.style.pointerEvents = 'none';
                     }
+
+                    if (adminPanelBtn) adminPanelBtn.style.display = 'none';
                 }
             });
         });
