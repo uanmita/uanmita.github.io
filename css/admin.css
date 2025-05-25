@@ -47,6 +47,10 @@ h1, h2 {
   overflow-x: auto;
 }
 
+#reservas-table-container .fila-pagada {
+  background: #e6f9e6 !important;
+}
+
 #precios-lista {
   margin-top: 1rem;
 }
@@ -164,6 +168,15 @@ td .acciones {
 }
 .cancelar-btn:hover:not(:disabled) {
   background: #c0392b;
+}
+
+/* Estilo para el botón cuando está en modo "Marcar como pendiente" */
+.cancelar-btn[data-estado="cancelado"] {
+  background: var(--primary);
+  color: #fff;
+}
+.cancelar-btn[data-estado="cancelado"]:hover {
+  background: var(--primary-dark);
 }
 
 .detalle-btn {
@@ -409,4 +422,716 @@ td.fecha, td.fechallegada, td.fechasalida {
 }
 #email-enviado-anim .email-anim-icon svg {
   display: block;
+}
+
+/* Encabezado azul para el modal de detalle de reserva */
+#detalle-modal .modal-content h2 {
+  background: var(--primary, #263159);
+  color: #fff;
+  margin: -2rem -2rem 1.5rem -2rem;
+  padding: 1.2rem 2rem;
+  border-radius: 8px 8px 0 0;
+  font-size: 1.5em;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Botones DataTables estilo admin */
+.dt-button, .buttons-csv, .buttons-excel, .buttons-print {
+  background: var(--primary, #263159) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 8px 18px !important;
+  font-size: 1em !important;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: background 0.2s;
+}
+.dt-button:hover, .buttons-csv:hover, .buttons-excel:hover, .buttons-print:hover {
+  background: var(--primary-dark, #1a2240) !important;
+  color: #fff !important;
+}
+
+/* Estilos para la tabla de informes */
+#tabla-informes {
+  width: 100% !important;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+#tabla-informes th, #tabla-informes td {
+  box-sizing: border-box;
+  padding: 4px 8px;
+  font-size: 0.92em;
+  vertical-align: middle;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#tabla-informes th:nth-child(1), #tabla-informes td:nth-child(1) { width: 110px; }   /* ID */
+#tabla-informes th:nth-child(2), #tabla-informes td:nth-child(2) { width: 90px; }    /* Estado */
+#tabla-informes th:nth-child(3), #tabla-informes td:nth-child(3) { width: 120px; }   /* Fecha Reserva */
+#tabla-informes th:nth-child(4), #tabla-informes td:nth-child(4) { width: 110px; }   /* Fecha Llegada */
+#tabla-informes th:nth-child(5), #tabla-informes td:nth-child(5) { width: 110px; }   /* Fecha Salida */
+#tabla-informes th:nth-child(6), #tabla-informes td:nth-child(6) { width: 120px; }   /* Nombre */
+#tabla-informes th:nth-child(7), #tabla-informes td:nth-child(7) { width: 160px; }   /* Email */
+#tabla-informes th:nth-child(8), #tabla-informes td:nth-child(8) { width: 110px; }   /* Teléfono */
+#tabla-informes th:nth-child(9), #tabla-informes td:nth-child(9) { width: 60px; }    /* Adultos */
+#tabla-informes th:nth-child(10), #tabla-informes td:nth-child(10) { width: 60px; }  /* Niños */
+#tabla-informes th:nth-child(11), #tabla-informes td:nth-child(11) { width: 70px; }  /* Mascotas */
+#tabla-informes th:nth-child(12), #tabla-informes td:nth-child(12) { width: 90px; }  /* Precio Total */
+#tabla-informes th:nth-child(13), #tabla-informes td:nth-child(13) { width: 110px; } /* Tipo Vehículo */
+#tabla-informes th:nth-child(14), #tabla-informes td:nth-child(14) { width: 90px; }  /* Matrícula */
+#tabla-informes th:nth-child(15), #tabla-informes td:nth-child(15) { width: 90px; }  /* Marca */
+#tabla-informes th:nth-child(16), #tabla-informes td:nth-child(16) { width: 90px; }  /* Modelo */
+#tabla-informes th:nth-child(17), #tabla-informes td:nth-child(17) { width: 90px; }  /* Carrocería */
+#tabla-informes th:nth-child(18), #tabla-informes td:nth-child(18) { width: 30px; }  /* Longitud */
+#tabla-informes th:nth-child(19), #tabla-informes td:nth-child(19) { width: 140px; } /* Servicios */
+#tabla-informes th:nth-child(20), #tabla-informes td:nth-child(20) { width: 140px; } /* Comentarios */
+#tabla-informes th:nth-child(21), #tabla-informes td:nth-child(21) { width: 70px; }  /* Pagada */
+#tabla-informes th:nth-child(22), #tabla-informes td:nth-child(22) { width: 110px; } /* Método de pago */
+
+#tabla-informes th {
+  background: #f5f7fa;
+  font-weight: 700;
+  font-size: 0.92em;
+  padding: 18px 8px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Ajuste de columnas */
+#tabla-informes th,
+#tabla-informes td {
+  min-width: 80px;
+  max-width: none;
+}
+
+/* Ajuste de flechas de ordenación */
+#tabla-informes th.sorting:after,
+#tabla-informes th.sorting_asc:after,
+#tabla-informes th.sorting_desc:after {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'FontAwesome', 'Font Awesome 6 Free', Arial, sans-serif !important;
+  font-weight: 900;
+  font-size: 1.2em;
+  color: #888;
+  opacity: 0.8;
+  display: inline-block;
+  pointer-events: none;
+  background: transparent;
+  padding-left: 2px;
+}
+
+/* Sombrear columna al pasar el ratón por el título */
+#tabla-informes th.col-hover,
+#tabla-informes td.col-hover {
+  background: #ffe0b2 !important;
+  transition: background 0.2s;
+}
+
+/* Estilos para los filtros de informes */
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 200px;
+}
+
+.filtro-grupo label {
+  font-size: 0.9em;
+  color: #263159;
+  font-weight: 500;
+}
+
+.filtro-select,
+.filtro-input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9em;
+  min-width: 150px;
+}
+
+.filtro-select:focus,
+.filtro-input:focus {
+  outline: none;
+  border-color: #263159;
+  box-shadow: 0 0 0 2px rgba(38, 49, 89, 0.1);
+}
+
+/* Estilos para la tabla de informes */
+#tabla-informes {
+  font-size: 0.9em;
+}
+
+#tabla-informes th {
+  background-color: #f8f9fa;
+  padding: 0.75rem;
+  white-space: nowrap;
+}
+
+#tabla-informes td {
+  padding: 0.5rem;
+  white-space: nowrap;
+}
+
+#tabla-informes .col-hover {
+  background-color: rgba(38, 49, 89, 0.05);
+}
+
+/* Estilos para los botones de exportación */
+.dt-buttons {
+  margin-bottom: 1rem;
+}
+
+.dt-buttons .btn-guardar {
+  margin-right: 0.5rem;
+}
+
+/* Botón activo en el menú admin (anaranjado para Informes) */
+.admin-menu a.activo-informes {
+  background: #ff9800 !important;
+  color: #fff !important;
+}
+
+/* Alinear el buscador de DataTables a la izquierda, debajo de los filtros */
+#informes-section .dataTables_filter {
+  text-align: left !important;
+  float: none !important;
+  margin-bottom: 1rem;
+  margin-top: 0;
+  width: 100%;
+  max-width: 100vw;
+  padding-left: 0.5rem;
+}
+#informes-section .dataTables_filter label {
+  font-weight: 500;
+  font-size: 1em;
+}
+
+/* Centrar el buscador de DataTables y alinear paginación */
+.dataTables_filter {
+  text-align: center !important;
+  float: none !important;
+  margin-bottom: 1rem;
+}
+.dataTables_filter label {
+  font-weight: 500;
+  font-size: 1em;
+}
+.dataTables_paginate {
+  text-align: left !important;
+  float: none !important;
+  margin-top: 1.2rem !important;
+  margin-left: 0.5rem;
+}
+.dataTables_info {
+  margin-top: 1.2rem !important;
+  margin-left: 0.5rem;
+}
+
+/* Estilo para los filtros de la sección de informes */
+#filtros-informes select,
+#filtros-informes input[type="text"],
+#filtros-informes input[type="date"],
+#filtros-informes input[type="number"] {
+  background: #f5f7fa;
+  border: 1.5px solid #d1d5db;
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 1em;
+  color: #111;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(38,49,89,0.04);
+}
+#filtros-informes select:focus,
+#filtros-informes input[type="text"]:focus,
+#filtros-informes input[type="date"]:focus,
+#filtros-informes input[type="number"]:focus {
+  border: 1.5px solid var(--primary, #263159);
+  box-shadow: 0 2px 8px rgba(38,49,89,0.10);
+}
+#filtros-informes select {
+  min-width: 120px;
+}
+#filtros-informes input[type="date"] {
+  min-width: 140px;
+}
+#filtros-informes input[type="number"] {
+  min-width: 120px;
+  max-width: 160px;
+  text-align: right;
+}
+
+/* Estilo para el buscador de DataTables en informes */
+#informes-section .dataTables_filter input[type="search"] {
+  background: #f5f7fa;
+  border: 1.5px solid #d1d5db;
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 1em;
+  color: #111;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(38,49,89,0.04);
+  min-width: 180px;
+  margin-left: 0.5rem;
+}
+#informes-section .dataTables_filter input[type="search"]:focus {
+  border: 1.5px solid var(--primary, #263159);
+  box-shadow: 0 2px 8px rgba(38,49,89,0.10);
+}
+
+/* Forzar visibilidad y compatibilidad de flechas de ordenación DataTables */
+#tabla-informes th.sorting:after,
+#tabla-informes th.sorting_asc:after,
+#tabla-informes th.sorting_desc:after {
+  font-family: 'FontAwesome', 'Font Awesome 6 Free', Arial, sans-serif !important;
+  font-weight: 900;
+  font-size: 1.3em;
+  margin-left: 10px;
+  color: #888;
+  opacity: 0.8;
+  vertical-align: middle;
+  display: inline-block;
+}
+#tabla-informes th.sorting:after {
+  content: '\f0dc'; /* fa-sort */
+}
+#tabla-informes th.sorting_asc:after {
+  content: '\f0de'; /* fa-sort-up */
+  color: #ff9800;
+  opacity: 1;
+}
+#tabla-informes th.sorting_desc:after {
+  content: '\f0dd'; /* fa-sort-down */
+  color: #ff9800;
+  opacity: 1;
+}
+
+/* Sombrear columna al pasar el ratón por el título */
+#tabla-informes th.col-hover,
+#tabla-informes td.col-hover {
+  background: #ffe0b2 !important;
+  transition: background 0.2s;
+}
+
+/* Estilos para los filtros de informes */
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 200px;
+}
+
+.filtro-grupo label {
+  font-size: 0.9em;
+  color: #263159;
+  font-weight: 500;
+}
+
+.filtro-select,
+.filtro-input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9em;
+  min-width: 150px;
+}
+
+.filtro-select:focus,
+.filtro-input:focus {
+  outline: none;
+  border-color: #263159;
+  box-shadow: 0 0 0 2px rgba(38, 49, 89, 0.1);
+}
+
+/* Estilos para la tabla de informes */
+#tabla-informes {
+  font-size: 0.9em;
+}
+
+#tabla-informes th {
+  background-color: #f8f9fa;
+  padding: 0.75rem;
+  white-space: nowrap;
+}
+
+#tabla-informes td {
+  padding: 0.5rem;
+  white-space: nowrap;
+}
+
+#tabla-informes .col-hover {
+  background-color: rgba(38, 49, 89, 0.05);
+}
+
+/* Estilos para los botones de exportación */
+.dt-buttons {
+  margin-bottom: 1rem;
+}
+
+.dt-buttons .btn-guardar {
+  margin-right: 0.5rem;
+}
+
+/* Estilos para el grip de redimensionamiento */
+.grip {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background-color: #e0e0e0;
+  cursor: col-resize;
+  z-index: 2;
+}
+
+.grip:hover,
+.grip:active {
+  background-color: #263159;
+}
+
+.dragging {
+  cursor: col-resize;
+  user-select: none;
+}
+
+/* --- Mejoras de tabla de informes --- */
+#tabla-informes th, #tabla-informes td {
+  padding: 4px 8px;
+  font-size: 0.92em;
+  vertical-align: middle;
+  line-height: 1.2;
+}
+#tabla-informes td {
+  position: relative;
+  cursor: pointer;
+}
+#tabla-informes td[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  background: #263159;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: pre-line;
+  font-size: 0.95em;
+  z-index: 10;
+  min-width: 80px;
+  max-width: 350px;
+  box-shadow: 0 2px 8px rgba(38,49,89,0.15);
+  pointer-events: none;
+}
+#tabla-informes td[title]:hover {
+  z-index: 20;
+}
+/* Scrollbar horizontal personalizado */
+#informes-section > div[style*="overflow-x:auto"]::-webkit-scrollbar {
+  height: 10px;
+  background: #f5f7fa;
+  border-radius: 6px;
+}
+#informes-section > div[style*="overflow-x:auto"]::-webkit-scrollbar-thumb {
+  background: #bfc6e0;
+  border-radius: 6px;
+}
+#informes-section > div[style*="overflow-x:auto"]::-webkit-scrollbar-thumb:hover {
+  background: #263159;
+}
+
+/* Scroll horizontal para la tabla de informes */
+#informes-section > div[style*="overflow-x:auto"],
+#informes-section .tabla-scroll-x {
+  overflow-x: auto !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  box-sizing: border-box;
+  padding-bottom: 1.5rem;
+  padding-right: 0;
+}
+
+#tabla-informes {
+  min-width: 1400px;
+  width: max-content;
+  max-width: none;
+  margin-right: 0 !important;
+}
+
+.admin-login-form {
+  max-width: 350px;
+  margin: 2rem auto;
+  padding: 2rem 2rem 1.5rem 2rem;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(38,49,89,0.10);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.input-group {
+  display: flex;
+  align-items: center;
+  background: #f5f7fa;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.input-group:focus-within {
+  border: 1.5px solid var(--primary, #3498db);
+  box-shadow: 0 2px 8px rgba(52,152,219,0.10);
+}
+.input-icon {
+  color: #bfc6e0;
+  font-size: 1.1em;
+  margin-right: 0.7em;
+}
+.input-group input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 1em;
+  flex: 1;
+  padding: 0.7em 0;
+  color: #263159;
+}
+.btn-admin-login {
+  background: var(--primary, #3498db);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.9em 0;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5em;
+}
+.btn-admin-login:hover {
+  background: var(--primary-dark, #2980b9);
+}
+
+.profile-header-content {
+  position: relative;
+  overflow: visible;
+}
+
+.fila-pagada {
+  background: #e6f9e6 !important;
+  /* Verde suave acorde con la web */
+}
+
+/* Estilos para botones de DataTables */
+.dt-buttons {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dt-button {
+  background: var(--primary, #263159) !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 6px !important;
+  font-size: 0.9rem !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  font-weight: 500 !important;
+}
+
+.dt-button:hover {
+  background: var(--warning, #ffb347) !important;
+  color: white !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(38,49,89,0.15) !important;
+}
+
+.dt-button-collection {
+  background: white !important;
+  border: 1px solid #ddd !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 12px rgba(38,49,89,0.1) !important;
+  padding: 0.5rem !important;
+}
+
+.dt-button-collection .dt-button {
+  background: white !important;
+  color: var(--primary, #263159) !important;
+  border: 1px solid #ddd !important;
+  margin: 0.25rem !important;
+  width: calc(100% - 0.5rem) !important;
+  text-align: left !important;
+}
+
+.dt-button-collection .dt-button:hover {
+  background: var(--warning, #ffb347) !important;
+  color: white !important;
+  border-color: var(--warning, #ffb347) !important;
+}
+
+/* Estilos para el menú de columnas */
+.dt-button-collection .buttons-columnVisibility {
+  padding: 0.5rem 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.dt-button-collection .buttons-columnVisibility.active {
+  background: var(--primary, #263159) !important;
+  color: white !important;
+  border-color: var(--primary, #263159) !important;
+}
+
+/* Estilos para la paginación */
+.dataTables_paginate {
+  display: block !important;
+  text-align: right !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+.dataTables_paginate .paginate_button {
+  background: white !important;
+  color: #263159 !important;
+  border-radius: 0 !important;
+  border: 1px solid #ddd !important;
+  margin: 0 0.1rem !important;
+  padding: 0.4rem 0.9rem !important;
+  font-weight: 400 !important;
+  font-size: 1em !important;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: none !important;
+}
+.dataTables_paginate .paginate_button:hover,
+.dataTables_paginate .paginate_button.current {
+  background: #263159 !important;
+  color: white !important;
+}
+.dataTables_paginate .paginate_button.disabled {
+  background: #e0e0e0 !important;
+  color: #aaa !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+/* Alinear a la derecha los datos de la tabla de informes */
+#tabla-informes td {
+  text-align: right !important;
+}
+
+/* Estilos para el selector de registros por página */
+.dataTables_length select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 0 0.5rem;
+}
+
+/* Estilos para la información de la tabla */
+.dataTables_info {
+  text-align: right !important;
+  font-size: 1em;
+  color: #666;
+  font-weight: 400;
+  margin-top: 1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Ajustes para el scroll horizontal */
+.dataTables_scrollBody {
+  border-bottom: 1px solid #ddd;
+}
+
+/* Estilos para las cabeceras de columna */
+.dataTables_scrollHead {
+  background: #f8f9fa;
+}
+
+.dataTables_scrollHead th {
+  padding: 1rem !important;
+  font-weight: 600 !important;
+  color: #263159 !important;
+  border-bottom: 2px solid #ddd !important;
+}
+
+/* Estilos para las celdas de la tabla */
+.dataTables_scrollBody td {
+  padding: 0.75rem 1rem !important;
+  border-bottom: 1px solid #eee !important;
+}
+
+/* Estilos para el reordenamiento de columnas */
+.dt-colReorder-float {
+  background: #263159 !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+}
+
+/* Estilos para el grip de redimensionamiento */
+.grip {
+  width: 4px;
+  height: 100%;
+  background: #ddd;
+  cursor: col-resize;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.grip:hover {
+  background: #263159;
+}
+
+/* Estilos para el estado de arrastre */
+.dragging {
+  opacity: 0.5;
+  background: #f5f5f5;
+}
+
+/* Forzar estilo de botones DataTables deshabilitados */
+.dt-button:disabled, .dt-button.disabled, .dt-button[disabled] {
+  background: var(--primary, #263159) !important;
+  color: white !important;
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  border: none !important;
+}
+
+.dt-button:disabled:hover, .dt-button.disabled:hover, .dt-button[disabled]:hover {
+  background: var(--warning, #ffb347) !important;
+  color: white !important;
+  opacity: 0.7 !important;
+}
+
+.d-none { display: none !important; }
+
+#tabla-informes td {
+  text-align: left !important;
+}
+
+/* Personalización del texto de paginación */
+.dataTables_info {
+  text-align: right;
+  font-size: 1.05em;
+  color: var(--primary, #263159);
+  font-weight: 500;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.5rem !important;
 } 

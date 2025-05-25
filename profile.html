@@ -475,23 +475,27 @@
     <div class="profile-page">
         <header class="profile-header">
             <div class="profile-header-content">
-                <img src="img/logo.png" alt="Logo" class="profile-logo">
-                <div class="profile-photo-container">
-                    <img src="img/default-avatar.png" alt="Foto de perfil" class="profile-photo" id="profilePhoto">
-                    <label for="photoInput" class="photo-upload-btn">
-                        <i class="fas fa-camera"></i> Cambiar foto
-                    </label>
-                    <input type="file" id="photoInput" hidden accept="image/*">
-                </div>
-                <div class="profile-info">
-                    <h1 id="userName">Cargando...</h1>
-                    <p id="userEmail">Cargando...</p>
-                </div>
+                <a href="index.html" class="brand-modern">
+                    <div class="brand-logo-wrap">
+                        <img src="img/logo.png" alt="AC El Rinconcito" class="brand-logo-modern">
+                    </div>
+                    <div class="brand-title-modern">
+                        <span>AC El Rinconcito</span>
+                        <small>Mi Perfil</small>
+                    </div>
+                </a>
             </div>
         </header>
 
         <div class="profile-content">
             <aside class="profile-sidebar">
+                <div class="profile-photo-container" style="margin-bottom: 1.5rem;">
+                    <img id="profilePhoto" src="img/user-default.png" alt="Foto de perfil" class="profile-photo">
+                </div>
+                <div class="profile-user-info" style="margin-bottom:1.5rem;">
+                    <div id="userName" class="profile-user-name" style="font-size:1.1rem;font-weight:600;color:#1a237e;">Usuario</div>
+                    <div id="userEmail" class="profile-user-email" style="font-size:0.97rem;color:#666;word-break:break-all;">usuario@email.com</div>
+                </div>
                 <ul class="profile-menu">
                     <li><a href="#reservas" class="active" data-tab="reservas">
                         <i class="fas fa-calendar-alt"></i> Mis Reservas
@@ -665,9 +669,26 @@
                 document.getElementById('city').value = userData.city || '';
                 document.getElementById('country').value = userData.country || '';
 
+                // Guardar el género globalmente para el cambio de avatar
+                window.userGender = userData.gender || userData.genero || 'male';
+
                 if (userData.photoURL) {
                     document.getElementById('profilePhoto').src = userData.photoURL;
+                } else {
+                    const seed = user.uid || user.email || 'default';
+                    let style = 'personas'; // Usar estilo personas para todos
+                    document.getElementById('profilePhoto').src = `https://api.dicebear.com/7.x/${style}/svg?seed=${encodeURIComponent(seed)}`;
                 }
+
+                // Hacer el avatar clicable para cambiarlo aleatoriamente
+                const avatarImg = document.getElementById('profilePhoto');
+                avatarImg.style.cursor = 'pointer';
+                avatarImg.title = 'Haz clic para cambiar tu avatar';
+                avatarImg.addEventListener('click', function() {
+                    let style = 'personas';
+                    const randomSeed = Math.random().toString(36).substring(2, 12);
+                    this.src = `https://api.dicebear.com/7.x/${style}/svg?seed=${encodeURIComponent(randomSeed)}`;
+                });
 
                 // Cargar reservas (colección global, filtrando por email)
                 const reservasRef = collection(db, 'reservas');
@@ -726,129 +747,6 @@
                 mostrarNotificacion('error', 'Error al cargar los datos');
             }
         });
-
-        // Manejar cambio de foto de perfil
-        document.getElementById('photoInput').addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            try {
-                // Mostrar indicador de carga
-                const uploadBtn = document.querySelector('.photo-upload-btn');
-                uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo...';
-
-                // Crear nombre único para la imagen
-                const fileExtension = file.name.split('.').pop();
-                const fileName = `${auth.currentUser.uid}_${Date.now()}.${fileExtension}`;
-                
-                // Crear referencia en Storage
-                const storageRef = ref(storage, `profile-photos/${fileName}`);
-                
-                // Subir archivo
-                const snapshot = await uploadBytes(storageRef, file);
-                console.log('Archivo subido:', snapshot);
-                
-                // Obtener URL
-                const photoURL = await getDownloadURL(storageRef);
-                console.log('URL de la foto:', photoURL);
-
-                // Actualizar UI
-                document.getElementById('profilePhoto').src = photoURL;
-
-                // Actualizar en Firestore
-                await updateDoc(doc(db, "customers", auth.currentUser.uid), {
-                    photoURL: photoURL,
-                    updatedAt: new Date().toISOString()
-                });
-
-                // Restaurar botón
-                uploadBtn.innerHTML = '<i class="fas fa-camera"></i> Cambiar foto';
-                
-                mostrarNotificacion('exito', 'Foto de perfil actualizada');
-            } catch (error) {
-                console.error('Error al subir foto:', error);
-                mostrarNotificacion('error', 'Error al actualizar la foto: ' + error.message);
-                
-                // Restaurar botón en caso de error
-                document.querySelector('.photo-upload-btn').innerHTML = '<i class="fas fa-camera"></i> Cambiar foto';
-            }
-        });
-
-        // Manejar actualización de datos personales
-        document.getElementById('personalDataForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            try {
-                await updateDoc(doc(db, "customers", auth.currentUser.uid), {
-                    name: document.getElementById('fullName').value,
-                    phone: document.getElementById('phone').value,
-                    address: document.getElementById('address').value,
-                    city: document.getElementById('city').value,
-                    country: document.getElementById('country').value,
-                    updatedAt: new Date().toISOString()
-                });
-
-                mostrarNotificacion('exito', 'Datos actualizados correctamente');
-            } catch (error) {
-                console.error('Error al actualizar datos:', error);
-                mostrarNotificacion('error', 'Error al actualizar los datos');
-            }
-        });
-
-        // Manejar cambio de contraseña
-        document.getElementById('securityForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (newPassword !== confirmPassword) {
-                mostrarNotificacion('error', 'Las contraseñas no coinciden');
-                return;
-            }
-
-            try {
-                await updatePassword(auth.currentUser, newPassword);
-                mostrarNotificacion('exito', 'Contraseña actualizada correctamente');
-                document.getElementById('securityForm').reset();
-            } catch (error) {
-                console.error('Error al cambiar contraseña:', error);
-                mostrarNotificacion('error', 'Error al cambiar la contraseña');
-            }
-        });
-
-        // Actualizar el script del menú móvil
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuToggle = document.getElementById('menuToggle');
-            const sidebar = document.querySelector('.profile-sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-
-            if (menuToggle && sidebar && overlay) {
-                menuToggle.addEventListener('click', () => {
-                    sidebar.classList.toggle('active');
-                    overlay.classList.toggle('active');
-                    document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
-                });
-
-                overlay.addEventListener('click', () => {
-                    sidebar.classList.remove('active');
-                    overlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                });
-
-                // Cerrar menú al hacer click en enlaces
-                document.querySelectorAll('.profile-menu a').forEach(link => {
-                    link.addEventListener('click', () => {
-                        if (window.innerWidth <= 768) {
-                            sidebar.classList.remove('active');
-                            overlay.classList.remove('active');
-                            document.body.style.overflow = '';
-                        }
-                    });
-                });
-            }
-        });
     </script>
 </body>
 </html>
-``` 

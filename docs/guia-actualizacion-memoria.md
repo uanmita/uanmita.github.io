@@ -52,6 +52,7 @@
 - [ ] Documentar decisiones técnicas
 - [ ] Actualizar diagramas si es necesario
 - [ ] Incluir ejemplos de uso
+- [ ] Documentar flujos de UI avanzados, edición en tiempo real y feedback visual si aplica
 
 ### Para Cada Problema Resuelto
 - [ ] Documentar el problema
@@ -77,6 +78,7 @@
 - **Tecnologías**: Tecnologías utilizadas
 - **Implementación**: Breve descripción técnica
 - **Resultados**: Impacto y métricas
+- **Notas**: Documentar flujos de UI avanzados, edición en tiempo real y feedback visual si aplica
 ```
 
 ## Control de Versiones
